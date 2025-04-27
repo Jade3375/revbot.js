@@ -85,7 +85,7 @@ To contribute or modify the library:
 
 ## Contribution
 
-We welcome contributions to \`revbot.js\`! To contribute, follow these steps:
+We welcome contributions to `revbot.js`! To contribute, follow these steps:
 
 1. **Fork the Repository**  
    Go to the [repository](https://github.com/your-repo/revbot.js) and click the "Fork" button to create your own copy.
@@ -93,17 +93,17 @@ We welcome contributions to \`revbot.js\`! To contribute, follow these steps:
 2. **Clone Your Fork**  
    Clone your forked repository to your local machine:
 
-   \`\`\`bash
+   ```bash
    git clone https://github.com/your-username/revbot.js.git
    cd revbot.js
-   \`\`\`
+   ```
 
 3. **Create a Branch**  
    Create a new branch for your feature or bug fix:
 
-   \`\`\`bash
+   ```bash
    git checkout -b feature-or-bugfix-name
-   \`\`\`
+   ```
 
 4. **Make Changes**  
    Implement your changes or fixes in the codebase.
@@ -111,24 +111,24 @@ We welcome contributions to \`revbot.js\`! To contribute, follow these steps:
 5. **Test Your Changes**  
    Ensure your changes work as expected by running the project and any relevant tests:
 
-   \`\`\`bash
+   ```bash
    yarn test
-   \`\`\`
+   ```
 
 6. **Commit Your Changes**  
    Commit your changes with a descriptive message:
 
-   \`\`\`bash
+   ```bash
    git add .
    git commit -m "Description of your changes"
-   \`\`\`
+   ```
 
 7. **Push Your Branch**  
    Push your branch to your forked repository:
 
-   \`\`\`bash
+   ```bash
    git push origin feature-or-bugfix-name
-   \`\`\`
+   ```
 
 8. **Open a Pull Request**  
    Go to the original repository and open a pull request from your branch. Provide a clear description of your changes and why they should be merged.
@@ -140,7 +140,7 @@ We welcome contributions to \`revbot.js\`! To contribute, follow these steps:
 - Add or update documentation if necessary.
 - Ensure your changes do not break existing functionality.
 
-Thank you for contributing to \`revbot.js\`!
+Thank you for contributing to `revbot.js`!
 
 ## License
 
