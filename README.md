@@ -61,7 +61,7 @@ To contribute or modify the library:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo/revbot.js.git
+   git clone https://github.com/Jade3375/revbot.js.git
    cd revbot.js
    ```
 
