@@ -1,0 +1,43 @@
+import type { Category as APICategory } from "revolt-api";
+import { Base, Server, ServerChannel } from "./index";
+
+export class Category extends Base {
+  name!: string;
+  protected _children: string[] = [];
+  constructor(
+    public readonly server: Server,
+    data: APICategory,
+  ) {
+    super(server.client);
+    this._patch(data);
+  }
+
+  protected _patch(data: APICategory): this {
+    super._patch(data);
+
+    if (data.title) {
+      this.name = data.title;
+    }
+
+    if (Array.isArray(data.channels)) {
+      this._children = data.channels;
+    }
+
+    return this;
+  }
+
+  get children(): Map<string, ServerChannel> {
+    const coll = new Map<string, ServerChannel>();
+
+    for (const childId of this._children) {
+      const child = this.server.channels.cache.get(childId);
+      if (child) coll.set(child.id, child);
+    }
+
+    return coll;
+  }
+
+  toString(): string {
+    return this.name;
+  }
+}

@@ -1,0 +1,14 @@
+import { Event, Events } from "./event";
+
+export class ChannelStartTyping extends Event {
+  handle(data: { id: string; user: string }): unknown {
+    const channel = this.client.channels.cache.get(data.id);
+    const user = this.client.users.cache.get(data.user);
+
+    if (channel?.isText() && user) {
+      this.client.emit(Events.TYPING_START, channel, user);
+    }
+
+    return { channel, user };
+  }
+}

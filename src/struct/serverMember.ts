@@ -1,0 +1,71 @@
+import type { Member as APIMember, FieldsMember } from "revolt-api";
+import { Base } from "./base";
+import { Attachment, Server, User } from "./index";
+import { client } from "../client/client";
+
+export class ServerMember extends Base {
+  serverId!: string;
+  nickname: string | null = null;
+  avatar: Attachment | null = null;
+  constructor(client: client, data: APIMember) {
+    super(client);
+    this._patch(data);
+  }
+
+  protected _patch(data: APIMember, clear: FieldsMember[] = []): this {
+    super._patch(data);
+
+    if ("nickname" in data) {
+      this.nickname = data.nickname ?? null;
+    }
+
+    if (data.avatar) {
+      this.avatar = new Attachment(this.client, data.avatar);
+    }
+
+    if (data._id) {
+      this.serverId = data._id.server;
+      this.id = data._id.user;
+    }
+
+    for (const field of clear) {
+      if (field === "Avatar") this.avatar = null;
+      if (field === "Nickname") this.nickname = null;
+    }
+
+    return this;
+  }
+
+  async setNickname(nickname?: string): Promise<this> {
+    await this.server.members.edit(this, { nickname });
+    return this;
+  }
+
+  ban(reason?: string): Promise<void> {
+    return this.server.members.ban(this, reason);
+  }
+
+  kick(): Promise<void> {
+    return this.server.members.kick(this);
+  }
+
+  leave(): Promise<void> {
+    return this.client.servers.delete(this.serverId);
+  }
+
+  //   async displayAvatarURL(options?: { size: number }): Promise<string> {
+  //     return await this.user.displayAvatarURL(options);
+  //   }
+
+  get user(): User {
+    return this.client.users.cache.get(this.id)!;
+  }
+
+  get server(): Server {
+    return this.client.servers.cache.get(this.serverId)!;
+  }
+
+  toString(): string {
+    return `<@${this.id}>`;
+  }
+}

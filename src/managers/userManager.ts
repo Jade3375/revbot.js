@@ -1,0 +1,36 @@
+import type { User as APIUser } from "revolt-api";
+import { BaseManager } from "./baseManager";
+import { Message, User } from "../struct/index";
+
+export type UserResolvable = User | APIUser | Message | string;
+
+export class UserManager extends BaseManager<User, APIUser> {
+  holds = User;
+
+  async fetch(user: UserResolvable, { force = true } = {}): Promise<User> {
+    const id = this.resolveId(user);
+
+    if (!id) throw new TypeError("INVALID_TYPE");
+
+    if (!force) {
+      const user = this.cache.get(id);
+      if (user) return user;
+    }
+
+    const data = (await this.client.api.get(`/users/${id}`)) as APIUser;
+
+    return this._add(data);
+  }
+
+  resolve(resolvable: Message | User): User;
+  resolve(resolvable: string | APIUser): User | null;
+  resolve(resolvable: User | APIUser | string | Message): User | null {
+    if (resolvable instanceof Message) return resolvable.author;
+    return super.resolve(resolvable);
+  }
+
+  resolveId(resolvable: UserResolvable): string | null {
+    if (resolvable instanceof Message) return resolvable.authorId;
+    return super.resolveId(resolvable);
+  }
+}

@@ -1,0 +1,117 @@
+import type { Channel as APIChannel } from "revolt-api";
+import { Attachment, Channel, Invite, Message, User } from "./index";
+import type { TextBasedChannel } from "./interfaces/baseChannel";
+import type { client } from "../client/client";
+import {
+  MessageManager,
+  MessageOptions,
+  MessageResolvable,
+  UserResolvable,
+} from "../managers/index.js";
+import { ChannelPermissions, ChannelTypes } from "../utils/index";
+
+type APIGroupChannel = Extract<APIChannel, { channel_type: "Group" }>;
+
+export class GroupChannel extends Channel implements TextBasedChannel {
+  readonly type = ChannelTypes.GROUP;
+  name!: string;
+  description: string | null = null;
+  ownerId!: string;
+  permissions!: Readonly<ChannelPermissions>;
+  icon: Attachment | null = null;
+  messages = new MessageManager(this);
+  lastMessageId: string | null = null;
+  users = new Map<string, User>();
+  nsfw = false;
+
+  constructor(client: client, data: APIGroupChannel) {
+    super(client);
+    this._patch(data);
+  }
+
+  protected _patch(data: APIGroupChannel): this {
+    super._patch(data);
+
+    if ("description" in data) {
+      this.description = data.description ?? null;
+    }
+
+    if (Array.isArray(data.recipients)) {
+      this.users.clear();
+      for (const userId of data.recipients) {
+        const user = this.client.users.cache.get(userId);
+        if (user) this.users.set(user.id, user);
+      }
+    }
+
+    if (typeof data.permissions === "number") {
+      this.permissions = new ChannelPermissions(data.permissions).freeze();
+    }
+
+    if (data.owner) {
+      this.ownerId = data.owner;
+    }
+
+    if (data.icon) {
+      this.icon = new Attachment(this.client, data.icon);
+    }
+
+    if (data.name) {
+      this.name = data.name;
+    }
+
+    if (data.last_message_id) this.lastMessageId = data.last_message_id;
+
+    if (typeof data.nsfw === "boolean") this.nsfw = data.nsfw;
+
+    return this;
+  }
+
+  get lastMessage(): Message | null {
+    if (!this.lastMessageId) return null;
+    return this.messages.cache.get(this.lastMessageId) ?? null;
+  }
+
+  get owner(): User | null {
+    return this.client.users.cache.get(this.ownerId) ?? null;
+  }
+
+  bulkDelete(
+    messages: MessageResolvable[] | Map<string, Message> | number,
+  ): Promise<void> {
+    return this.messages.bulkDelete(messages);
+  }
+
+  async createInvite(): Promise<Invite> {
+    const data = await this.client.api.post(`/channels/${this.id}/invites`, {});
+    return new Invite(
+      this.client,
+      data as { type: "Group"; _id: string; creator: string; channel: string },
+    );
+  }
+
+  async add(user: UserResolvable): Promise<void> {
+    const id = this.client.users.resolveId(user);
+    if (!id) throw new TypeError("INVALID_TYPE");
+    await this.client.api.put(`/channels/${this.id}/recipients/${id}`);
+  }
+
+  async remove(user: UserResolvable): Promise<void> {
+    const id = this.client.users.resolveId(user);
+    if (!id) throw new TypeError("INVALID_TYPE");
+    await this.client.api.delete(`/channels/${this.id}/recipients/${id}`);
+  }
+
+  leave(): Promise<void> {
+    return super.delete();
+  }
+
+  send(options: MessageOptions | string): Promise<Message> {
+    return this.messages.send(options);
+  }
+
+  //   iconURL(options?: { size: number }): string | null {
+  //     if (!this.icon) return null;
+  //     return this.client.api.cdn.icon(this.icon.id, options?.size);
+  //   }
+}
