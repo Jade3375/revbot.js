@@ -3,6 +3,19 @@
   "version": "0.0.1",
   "description": "A Revolt bot client for Node.js",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jade3375/revbot.js"
+  },
+  "keywords": [
+    "revolt",
+    "bot",
+    "client",
+    "nodejs",
+    "typescript"
+  ],
+  "author": "Jade3375",
+  "license": "MIT License",
   "packageManager": "yarn@4.9.1",
   "devDependencies": {
     "@types/node": "^22.15.2",

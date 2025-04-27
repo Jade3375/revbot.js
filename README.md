@@ -144,4 +144,4 @@ Thank you for contributing to \`revbot.js\`!
 
 ## License
 
-This project is licensed under Apache License 2.0.
+This project is licensed under the MIT License.
