@@ -1,5 +1,7 @@
 # revbot.js
 
+# Note: this package is currently in the early stages of development and testing
+
 `revbot.js` is a Node.js library for building bots on the Revolt platform. It provides an easy-to-use interface for interacting with Revolt's API, managing events, and handling various bot functionalities.
 [revolt server](https://rvlt.gg/7hG9csvW)
 
