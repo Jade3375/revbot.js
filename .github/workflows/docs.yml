@@ -8,17 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 23.x
+      - name: setup yarn
+        uses: threeal/setup-yarn-action@v2.0.0
 
-      - name: Install Dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
+      - name: install dependencies
+        run: yarn install --frozen-lockfile
 
       - name: Test Docs
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: test:docs
+        rin: yarn test:docs
