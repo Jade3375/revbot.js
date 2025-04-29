@@ -18,11 +18,16 @@
   "license": "MIT License",
   "packageManager": "yarn@4.9.1",
   "devDependencies": {
+    "@mxssfd/typedoc-theme": "^1.1.7",
     "@types/node": "^22.15.2",
     "@types/ws": "^8.18.1",
     "eslint-config-prettier": "^10.1.2",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
+    "typedoc": "^0.28.3",
+    "typedoc-plugin-extras": "^4.0.0",
+    "typedoc-plugin-mdn-links": "^5.0.1",
+    "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
@@ -35,6 +40,7 @@
     "build": "yarn clean && tsc -p tsconfig.json",
     "start": "yarn build && yarn node --enable-source-maps dist/index.js",
     "testClient": "yarn build && yarn node --enable-source-maps dist/test.js",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "test:docs": "rimraf docs && yarn typedoc --options static/typedoc.json"
   }
 }

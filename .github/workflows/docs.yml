@@ -1,0 +1,13 @@
+name: Build Docs
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v4
+      - name: Install Dependencies
+        run: yarn install
+      - name: Test Docs
+        run: yarn test:docs

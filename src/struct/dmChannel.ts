@@ -15,7 +15,6 @@ type APIDirectChannel = Extract<APIChannel, { channel_type: "DirectMessage" }>;
  * Represents a direct message (DM) channel between users.
  *
  * @extends Channel
- * @implements TextBasedChannel
  */
 export class DMChannel extends Channel implements TextBasedChannel {
   /** The type of the channel, which is always `DM` for direct message channels. */

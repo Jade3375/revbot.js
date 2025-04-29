@@ -1,0 +1,26 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "revbot.js",
+  "entryPoints": ["../src"],
+  "plugin": [
+    "typedoc-plugin-extras",
+    "typedoc-plugin-mdn-links",
+    "typedoc-plugin-merge-modules",
+    "./dark.js"
+  ],
+  "tsconfig": "../tsconfig.json",
+  "entryPointStrategy": "expand",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "githubPages": false,
+  "hideGenerator": true,
+  "gitRemote": "origin",
+  "readme": "../README.md",
+  "out": "../docs",
+  "json": "../docs/docs.json",
+  "exclude": [],
+  "favicon": "./favicon.ico",
+  "titleLink": "https://github.com/Jade3375/revbot.js",
+  "mergeModulesMergeMode": "project",
+  "kindSortOrder": ["Class", "Namespace"]
+}

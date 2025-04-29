@@ -16,7 +16,6 @@ type APIGroupChannel = Extract<APIChannel, { channel_type: "Group" }>;
  * Represents a group channel, which allows multiple users to communicate.
  *
  * @extends Channel
- * @implements TextBasedChannel
  */
 export class GroupChannel extends Channel implements TextBasedChannel {
   /** The type of the channel, which is always `GROUP` for group channels. */

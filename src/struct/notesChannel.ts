@@ -15,7 +15,6 @@ type APINotesChannel = Extract<APIChannel, { channel_type: "SavedMessages" }>;
  * Represents a notes channel, which is used for saving personal messages.
  *
  * @extends Channel
- * @implements TextBasedChannel
  */
 export class NotesChannel extends Channel implements TextBasedChannel {
   /** The type of the channel, which is always `NOTES` for notes channels. */

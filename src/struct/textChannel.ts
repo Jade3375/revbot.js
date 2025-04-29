@@ -15,7 +15,6 @@ type APITextChannel = Extract<Channel, { channel_type: "TextChannel" }>;
  * Represents a text channel in a server.
  *
  * @extends ServerChannel
- * @implements TextBasedChannel
  */
 export class TextChannel extends ServerChannel implements TextBasedChannel {
   /** The ID of the last message sent in this text channel, if any. */
