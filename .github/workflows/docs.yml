@@ -10,6 +10,8 @@ jobs:
 
       - name: setup yarn
         uses: threeal/setup-yarn-action@v2.0.0
+        with:
+          version: latest
 
       - name: install dependencies
         run: yarn install --frozen-lockfile
