@@ -8,26 +8,70 @@ import {
 } from "../managers/index";
 import { ServerPermissions, UUID } from "../utils/index";
 
+/**
+ * Represents a server (guild) in the client.
+ *
+ * @extends Base
+ */
 export class Server extends Base {
+  /** The name of the server. */
   name!: string;
+
+  /** The description of the server, or `null` if none is set. */
   description: string | null = null;
+
+  /** The ID of the user who owns the server. */
   ownerId!: string;
+
+  /** Manages the members of the server. */
   members = new ServerMemberManager(this);
+
+  /** Manages the channels of the server. */
   channels = new ServerChannelManager(this);
+
+  /** Manages the roles of the server. */
   roles = new RoleManager(this);
+
+  /** The icon of the server, or `null` if none is set. */
   icon: Attachment | null = null;
+
+  /** The banner of the server, or `null` if none is set. */
   banner: Attachment | null = null;
+
+  /** Whether analytics are enabled for the server. */
   analytics = false;
+
+  /** Whether the server is discoverable. */
   discoverable = false;
+
+  /** Whether the server is marked as NSFW (Not Safe For Work). */
   nsfw = false;
+
+  /** The default permissions for the server. */
   permissions!: ServerPermissions;
+
+  /** The categories in the server. */
   categories = new Map<string, Category>();
 
+  /**
+   * Creates a new Server instance.
+   *
+   * @param {client} client - The client instance.
+   * @param {APIServer} data - The raw data for the server from the API.
+   */
   constructor(client: client, data: APIServer) {
     super(client);
     this._patch(data);
   }
 
+  /**
+   * Updates the server instance with new data from the API.
+   *
+   * @param {APIServer} data - The raw data for the server from the API.
+   * @param {FieldsServer[]} [clear=[]] - Fields to clear in the server.
+   * @returns {this} The updated server instance.
+   * @protected
+   */
   protected _patch(data: APIServer, clear: FieldsServer[] = []): this {
     super._patch(data);
 
@@ -93,28 +137,40 @@ export class Server extends Base {
     return this;
   }
 
+  /**
+   * Retrieves the current user's member instance in the server.
+   *
+   * @returns {ServerMember | null} The current user's member instance, or `null` if not found.
+   */
   get me(): ServerMember | null {
     return this.members.cache.get(this.client.user?.id as string) ?? null;
   }
 
+  /**
+   * Gets the creation date of the server.
+   *
+   * @returns {Date} The date when the server was created.
+   */
   get createdAt(): Date {
     return UUID.timestampOf(this.id);
   }
 
+  /**
+   * Gets the creation timestamp of the server in milliseconds.
+   *
+   * @returns {number} The timestamp of when the server was created.
+   */
   get createdTimestamp(): number {
     return this.createdAt.getTime();
   }
 
+  /**
+   * Retrieves the owner of the server.
+   *
+   * @returns {User | null} The owner of the server, or `null` if not found.
+   */
   get owner(): User | null {
     return this.client.users.cache.get(this.ownerId) ?? null;
-  }
-
-  ack(): Promise<void> {
-    return this.client.servers.ack(this);
-  }
-
-  delete(): Promise<void> {
-    return this.client.servers.delete(this);
   }
 
   //   iconURL(options?: { size: number }): string | null {
@@ -129,6 +185,11 @@ export class Server extends Base {
   //       : null;
   //   }
 
+  /**
+   * Converts the server to a string representation.
+   *
+   * @returns {string} The name of the server.
+   */
   toString(): string {
     return this.name;
   }

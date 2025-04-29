@@ -7,6 +7,11 @@ export type UserResolvable = User | APIUser | Message | string;
 export class UserManager extends BaseManager<User, APIUser> {
   holds = User;
 
+  /**
+   *
+   * @param user The user to delete
+   * @returns A promise that resolves when the user is deleted
+   */
   async fetch(user: UserResolvable, { force = true } = {}): Promise<User> {
     const id = this.resolveId(user);
 
@@ -22,6 +27,11 @@ export class UserManager extends BaseManager<User, APIUser> {
     return this._add(data);
   }
 
+  /**
+   * get a user form cache
+   * @param resolvable The user to resolve
+   * @returns The user or null if it cannot be resolved
+   */
   resolve(resolvable: Message | User): User;
   resolve(resolvable: string | APIUser): User | null;
   resolve(resolvable: User | APIUser | string | Message): User | null {
@@ -29,6 +39,11 @@ export class UserManager extends BaseManager<User, APIUser> {
     return super.resolve(resolvable);
   }
 
+  /**
+   * get a user id form cache
+   * @param resolvable The user to resolve
+   * @returns The user id or null if it cannot be resolved
+   */
   resolveId(resolvable: UserResolvable): string | null {
     if (resolvable instanceof Message) return resolvable.authorId;
     return super.resolveId(resolvable);

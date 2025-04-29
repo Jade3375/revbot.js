@@ -16,6 +16,11 @@ export class RoleManager extends BaseManager<Role, APIRole & { id: string }> {
     return role;
   }
 
+  /**
+   * creates a new role in the server
+   * @param name The name of the role to create
+   * @returns
+   */
   async create(name: string): Promise<Role> {
     const { id, role } = await this.client.api.post<{
       id: string;
@@ -24,6 +29,11 @@ export class RoleManager extends BaseManager<Role, APIRole & { id: string }> {
     return this._add(Object.assign(role, { id }));
   }
 
+  /**
+   * deletes a role from the server
+   * @param role the role to delete
+   * @returns A promise that resolves when the role is deleted
+   */
   async delete(role: RoleResolvable): Promise<void> {
     const id = this.resolveId(role);
     if (!id) throw new TypeError("INVALID_TYPE");

@@ -48,6 +48,13 @@ export class ServerChannelManager extends BaseManager<ServerChannel> {
     return channel;
   }
 
+  /**
+   * creates a new channel in the server
+   * @param name The name of the channel to create
+   * @param type The type of the channel to create. Can be "Text" or "Voice". Defaults to "Text".
+   * @param description The description of the channel to create. Only used for voice channels.
+   * @returns A promise that resolves to the created channel
+   */
   async create({
     name,
     type = "Text",
@@ -67,6 +74,13 @@ export class ServerChannelManager extends BaseManager<ServerChannel> {
     return this._add(data as APIServerChannel);
   }
 
+  /**
+   * fetch a channel from the server
+   * @param channel The channel to fetch. Can be a string, a channel object, or an API channel object.
+   * @param force Whether to force fetch the channel from the API. Defaults to true.
+   * If set to false, the method will return the channel from the cache if it exists.
+   * @returns A promise that resolves to the fetched channel
+   */
   async fetch(
     channel: ServerChannelResolvable,
     { force = true } = {},
@@ -74,7 +88,7 @@ export class ServerChannelManager extends BaseManager<ServerChannel> {
     const id = this.resolveId(channel);
 
     if (!id) {
-      throw new TypeError("INVALID_TYPE");
+      throw new TypeError("INVALID_ID");
     }
 
     if (!force) {

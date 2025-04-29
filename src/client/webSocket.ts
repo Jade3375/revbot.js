@@ -8,24 +8,58 @@ declare function setInterval(
   ...args: any[]
 ): number;
 
+/**
+ * Represents the WebSocket client used for real-time communication with the API.
+ */
 export class WebSocketClient {
+  /** The interval for sending heartbeats, in milliseconds. */
   heartbeatInterval?: number;
+
+  /** The timestamp of the last ping sent, in milliseconds. */
   lastPingTimestamp?: number;
+
+  /** Whether the last pong acknowledgment was received. */
   lastPongAck?: boolean = false;
+
+  /** The WebSocket connection instance. */
   socket?: WebSocket | null;
+
+  /** Whether the WebSocket client is connected. */
   connected: boolean = false;
+
+  /** A promise representing the reconnecting process, or `null` if not reconnecting. */
   reconnecting: Promise<unknown> | null = null;
+
+  /** Whether the WebSocket client is ready. */
   ready = false;
 
+  /**
+   * Creates a new WebSocketClient instance.
+   *
+   * @param {client} client - The client instance.
+   */
   constructor(protected readonly client: client) {}
 
+  /**
+   * Logs a debug message.
+   *
+   * @param {unknown} message - The message to log.
+   * @private
+   */
   private debug(message: unknown): void {
     this.client.debug(`[WS] ${message}`);
   }
 
+  /**
+   * Sends data through the WebSocket connection.
+   *
+   * @param {unknown} data - The data to send.
+   * @returns {Promise<void>} A promise that resolves when the data is sent.
+   * @throws {Error} Throws an error if the WebSocket is not open.
+   */
   async send(data: unknown): Promise<void> {
     if (this.reconnecting) {
-      this.debug("Reconnecting, waiting to sending message.");
+      this.debug("Reconnecting, waiting to send message.");
       await this.reconnecting;
     }
     if (this.socket?.readyState === WebSocket.OPEN) {
@@ -36,6 +70,11 @@ export class WebSocketClient {
     }
   }
 
+  /**
+   * Handles the WebSocket connection opening.
+   *
+   * @private
+   */
   private onOpen(): void {
     if (!this.client.token) throw new Error("Token is required");
     this.send({
@@ -44,11 +83,21 @@ export class WebSocketClient {
     });
   }
 
+  /**
+   * Gets the current ping (latency) of the WebSocket connection.
+   *
+   * @returns {number} The ping in milliseconds, or `-0` if the WebSocket is not connected.
+   */
   get ping(): number {
     if (!this.socket) return -0;
     return Date.now() - this.lastPingTimestamp!;
   }
 
+  /**
+   * Sets the heartbeat interval for the WebSocket connection.
+   *
+   * @param {number} time - The interval time in milliseconds. Use `-1` to clear the interval.
+   */
   setHeartbeatTimer(time: number): void {
     this.debug(`Setting a heartbeat interval for ${time}ms.`);
     if (this.heartbeatInterval) {
@@ -59,11 +108,14 @@ export class WebSocketClient {
     }
   }
 
+  /**
+   * Sends a heartbeat to the server to keep the connection alive.
+   */
   sendHeartbeat(): void {
     this.debug("Sending heartbeat.");
 
     if (!this.lastPongAck) {
-      this.debug("did not receive a pong ack.");
+      this.debug("Did not receive a pong ack.");
       if (this.client.options.ws?.reconnect) {
         this.reconnecting = this.destroy()
           .then(() => this.connect())
@@ -76,10 +128,22 @@ export class WebSocketClient {
     this.lastPingTimestamp = now;
   }
 
+  /**
+   * Handles WebSocket errors.
+   *
+   * @param {unknown} event - The error event.
+   * @private
+   */
   private onError(event: unknown): void {
     this.client.emit(Events.ERROR, event);
   }
 
+  /**
+   * Handles incoming WebSocket messages.
+   *
+   * @param {{ data: unknown }} param0 - The message event containing the data.
+   * @private
+   */
   private onMessage({ data }: { data: unknown }): void {
     let packet: unknown;
     try {
@@ -94,11 +158,23 @@ export class WebSocketClient {
     this.onPacket(packet).catch((e) => this.client.emit(Events.ERROR, e));
   }
 
+  /**
+   * Handles the WebSocket connection closing.
+   *
+   * @param {{ code: number; reason: string }} event - The close event containing the code and reason.
+   * @private
+   */
   private onClose(event: { code: number; reason: string }): void {
     this.debug(`Closed with reason: ${event.reason}, code: ${event.code}`);
     this.destroy();
   }
 
+  /**
+   * Handles incoming WebSocket packets.
+   *
+   * @param {any} packet - The packet data.
+   * @private
+   */
   private async onPacket(packet: any) {
     if (!packet) {
       this.debug(`Received broken packet: '${packet}'.`);
@@ -174,6 +250,11 @@ export class WebSocketClient {
     }
   }
 
+  /**
+   * Connects to the WebSocket server.
+   *
+   * @returns {Promise<this>} A promise that resolves when the connection is established.
+   */
   connect(): Promise<this> {
     return new Promise((resolve) => {
       if (this.socket?.readyState === WebSocket.OPEN && this.ready) {
@@ -197,6 +278,11 @@ export class WebSocketClient {
     });
   }
 
+  /**
+   * Destroys the WebSocket connection and clears its state.
+   *
+   * @returns {Promise<void>} A promise that resolves when the connection is destroyed.
+   */
   destroy(): Promise<void> {
     return new Promise((resolve) => {
       this.setHeartbeatTimer(-1);

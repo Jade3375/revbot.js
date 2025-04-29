@@ -7,18 +7,46 @@ import type {
 import { client } from "../client/client";
 import { Badges, UUID } from "../utils/index";
 
+/**
+ * Represents a user in the client.
+ *
+ * @extends Base
+ */
 export class User extends Base {
+  /** The username of the user. */
   username!: string;
+
+  /** The avatar of the user, or `null` if none is set. */
   avatar: Attachment | null = null;
+
+  /** The presence status of the user. */
   presence = new Presence(this.client);
+
+  /** The badges associated with the user. */
   badges!: Badges;
+
+  /** Whether the user is a bot. */
   bot = false;
 
+  /**
+   * Creates a new User instance.
+   *
+   * @param {client} client - The client instance.
+   * @param {APIUser} data - The raw data for the user from the API.
+   */
   constructor(client: client, data: APIUser) {
     super(client);
     this._patch(data);
   }
 
+  /**
+   * Updates the user instance with new data from the API.
+   *
+   * @param {APIUser} data - The raw data for the user from the API.
+   * @param {FieldsUser[]} [clear=[]] - Fields to clear in the user.
+   * @returns {this} The updated user instance.
+   * @protected
+   */
   protected _patch(data: APIUser, clear: FieldsUser[] = []): this {
     super._patch(data);
 
@@ -55,22 +83,62 @@ export class User extends Base {
     return this;
   }
 
+  /**
+   * Gets the creation date of the user.
+   *
+   * @returns {Date} The date when the user was created.
+   */
   get createdAt(): Date {
     return UUID.timestampOf(this.id);
   }
 
+  /**
+   * Gets the creation timestamp of the user in milliseconds.
+   *
+   * @returns {number} The timestamp of when the user was created.
+   */
   get createdTimestamp(): number {
     return this.createdAt.getTime();
   }
 
+  /**
+   * Blocks the user.
+   *
+   * @returns {Promise<void>} A promise that resolves when the user is blocked.
+   *
+   * @example
+   * ```typescript
+   * await user.block();
+   * ```
+   */
   async block(): Promise<void> {
     await this.client.api.put(`/users/${this.id}/block`);
   }
 
+  /**
+   * Unblocks the user.
+   *
+   * @returns {Promise<void>} A promise that resolves when the user is unblocked.
+   *
+   * @example
+   * ```typescript
+   * await user.unblock();
+   * ```
+   */
   async unblock(): Promise<void> {
     await this.client.api.delete(`/users/${this.id}/block`);
   }
 
+  /**
+   * Creates a direct message (DM) channel with the user.
+   *
+   * @returns {Promise<DMChannel>} A promise that resolves with the created DM channel.
+   *
+   * @example
+   * ```typescript
+   * const dmChannel = await user.createDM();
+   * ```
+   */
   async createDM(): Promise<DMChannel> {
     const data = await this.client.api.get(`/users/${this.id}/dm`);
     return this.client.channels._add(data as APIChannel) as DMChannel;
@@ -88,15 +156,26 @@ export class User extends Base {
 
   // async displayAvatarURL(options?: { size: number }): Promise<string> {
   //   const defaultAvatar = (await this.client.api.get(
-  //     `/users/${this.id}/default_avatarr`,
+  //     `/users/${this.id}/default_avatar`,
   //   )) as string;
   //   return this.avatarURL(options) ?? defaultAvatar;
   // }
 
+  /**
+   * Fetches the latest data for the user from the API.
+   *
+   * @param {boolean} [force=true] - Whether to force a fetch even if the user is cached.
+   * @returns {Promise<User>} A promise that resolves with the updated user instance.
+   */
   fetch(force = true): Promise<User> {
     return this.client.users.fetch(this, { force });
   }
 
+  /**
+   * Converts the user to a string representation.
+   *
+   * @returns {string} A string representation of the user in the format `<@userId>`.
+   */
   toString(): string {
     return `<@${this.id}>`;
   }

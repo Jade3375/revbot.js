@@ -16,6 +16,15 @@ export class ServerMemberManager extends BaseManager<ServerMember, Member> {
     super(server.client);
   }
 
+  /**
+   * edit selected member in the server
+   * @param member The member to edit
+   * @param options The options to edit the member with
+   * @param options.nickname The nickname of the member to set
+   * @param options.avatar The avatar of the member to set
+   * @param options.roles The roles of the member to set
+   * @returns A promise that resolves when the member is edited
+   */
   async edit(
     member: ServerMemberResolvable,
     options: EditServerMemberOptions,
@@ -29,6 +38,12 @@ export class ServerMemberManager extends BaseManager<ServerMember, Member> {
     });
   }
 
+  /**
+   * ban selected member in the server
+   * @param member The member to ban
+   * @param reason the reason for the ban
+   * @returns A promise that resolves when the member is banned
+   */
   async ban(member: ServerMemberResolvable, reason?: string): Promise<void> {
     const id = this.resolveId(member);
     if (!id) {
@@ -39,6 +54,11 @@ export class ServerMemberManager extends BaseManager<ServerMember, Member> {
     });
   }
 
+  /**
+   * kick selected member in the server
+   * @param member The member to kick
+   * @returns A promise that resolves when the member is kicked
+   */
   async kick(member: ServerMemberResolvable): Promise<void> {
     const id = this.resolveId(member);
     if (!id) {
@@ -47,6 +67,11 @@ export class ServerMemberManager extends BaseManager<ServerMember, Member> {
     await this.client.api.delete(`/servers/${this.server.id}/members/${id}`);
   }
 
+  /**
+   * unban selected member in the server
+   * @param member The member to unban
+   * @returns A promise that resolves when the member is unbanned
+   */
   async unban(member: ServerMemberResolvable): Promise<void> {
     const id = this.resolveId(member);
     if (!id) {
@@ -55,6 +80,11 @@ export class ServerMemberManager extends BaseManager<ServerMember, Member> {
     await this.client.api.delete(`/servers/${this.server.id}/bans/${id}`);
   }
 
+  /**
+   * fetch a member from the server
+   * @param member The member to fetch
+   * @returns A promise that resolves with the fetched member
+   */
   async fetch(member: ServerMemberResolvable): Promise<ServerMember>;
   async fetch(): Promise<Map<string, ServerMember>>;
   async fetch(
@@ -82,6 +112,11 @@ export class ServerMemberManager extends BaseManager<ServerMember, Member> {
     }, new Map<string, ServerMember>());
   }
 
+  /**
+   * resolves a member from a string or a member object
+   * @param member The member to resolve
+   * @returns The id of the member or null if it cannot be resolved
+   */
   resolveId(member: ServerMemberResolvable): string | null {
     if (member == null) return null;
     if (member instanceof ServerMember || member instanceof User) {
