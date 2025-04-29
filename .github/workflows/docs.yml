@@ -6,8 +6,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "23.x"
       - name: Install Dependencies
-        run: yarn install
+      - uses: borales/actions-yarn@v4
+        run:
+          cmd: install
       - name: Test Docs
-        run: yarn test:docs
+        uses: borales/actions-yarn@v4
+        run:
+          cmd: test:docs
