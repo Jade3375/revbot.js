@@ -91,13 +91,13 @@ To contribute or modify the library:
 We welcome contributions to `revbot.js`! To contribute, follow these steps:
 
 1. **Fork the Repository**  
-   Go to the [repository](https://github.com/your-repo/revbot.js) and click the "Fork" button to create your own copy.
+   Go to the [repository](https://github.com/Jade3375/revbot.js) and click the "Fork" button to create your own copy.
 
 2. **Clone Your Fork**  
    Clone your forked repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/revbot.js.git
+   git clone https://github.com/Jade3375/revbot.js
    cd revbot.js
    ```
 
