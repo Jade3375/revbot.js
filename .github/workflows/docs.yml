@@ -15,4 +15,4 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Test Docs
-        rin: yarn test:docs
+        run: yarn test:docs
