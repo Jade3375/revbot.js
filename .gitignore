@@ -6,7 +6,6 @@
 !.yarn/sdks
 !.yarn/versions
 .vscode
-yarn.lock
 docs
 
 # Whether you use PnP or not, the node_modules folder is often used to store
