@@ -20,7 +20,7 @@
   "json": "../docs/docs.json",
   "exclude": [],
   "favicon": "./favicon.ico",
-  "titleLink": "https://github.com/Jade3375/revbot.js",
+  "titleLink": "https://jade3375.github.io/revbot.js/",
   "mergeModulesMergeMode": "project",
   "kindSortOrder": ["Class", "Namespace"]
 }
