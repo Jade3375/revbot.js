@@ -3,16 +3,21 @@ on: [push, pull_request]
 
 jobs:
   build:
+    name: Build Docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: setup node
       - uses: actions/setup-node@v3
         with:
           node-version: "23.x"
+
       - name: Install Dependencies
       - uses: borales/actions-yarn@v4
         run:
           cmd: install
+
       - name: Test Docs
         uses: borales/actions-yarn@v4
         run:
