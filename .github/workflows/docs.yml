@@ -15,10 +15,8 @@ jobs:
 
       - name: Install Dependencies
       - uses: borales/actions-yarn@v4
-        run:
-          cmd: install
+        run: yarn install
 
       - name: Test Docs
         uses: borales/actions-yarn@v4
-        run:
-          cmd: test:docs
+        run: yarn test:docs
