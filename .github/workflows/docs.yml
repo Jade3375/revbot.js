@@ -30,7 +30,6 @@ jobs:
           path: docs/
 
   deploy:
-    deploy:
     needs: build
     permissions:
       pages: write
