@@ -97,7 +97,7 @@ We welcome contributions to `revbot.js`! To contribute, follow these steps:
    Clone your forked repository to your local machine:
 
    ```bash
-   git clone https://github.com/Jade3375/revbot.js
+   git clone https://github.com/your-username/revbot.js
    cd revbot.js
    ```
 
