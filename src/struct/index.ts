@@ -17,3 +17,4 @@ export * from "./serverMember";
 export * from "./textChannel";
 export * from "./voiceChannels";
 export * from "./category";
+export * from "./emoji";

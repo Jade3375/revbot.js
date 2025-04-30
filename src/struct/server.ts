@@ -1,5 +1,5 @@
 import type { Server as APIServer, FieldsServer } from "revolt-api";
-import { Attachment, Base, Category, ServerMember, User } from "./index";
+import { Attachment, Base, Category, Emoji, ServerMember, User } from "./index";
 import { client } from "../client/client";
 import {
   RoleManager,
@@ -52,6 +52,9 @@ export class Server extends Base {
 
   /** The categories in the server. */
   categories = new Map<string, Category>();
+
+  /** the emojies associated with the server */
+  emojis = new Map<string, Emoji>();
 
   /**
    * Creates a new Server instance.

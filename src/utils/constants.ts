@@ -13,6 +13,8 @@ export enum Events {
   MESSAGE_DELETE = "messageDelete",
   MESSAGE_DELETE_BULK = "messageDeleteBulk",
   MESSAGE_UPDATE = "messageUpdate",
+  MESSAGE_REACT = "messageReact",
+  MESSAGE_REACT_REMOVE = "messageUnreact",
   RAW = "raw",
   READY = "ready",
   ROLE_CREATE = "roleCreate",

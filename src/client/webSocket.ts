@@ -1,4 +1,5 @@
 import { ClientUser } from "../struct/clientUser";
+import { Emoji } from "../struct/emoji";
 import { Events, WSEvents, wsUrl } from "../utils/constants";
 import { client } from "./client";
 
@@ -225,6 +226,12 @@ export class WebSocketClient {
             ?.members._add(member);
         }
 
+        for (const emoji of packet.emojis) {
+          this.client.servers.cache
+            .get(emoji.parent.id)
+            ?.emojis.set(emoji._id, { ...emoji, _id: emoji._id });
+        }
+
         this.setHeartbeatTimer(
           this.client.options.ws?.heartbeatInterval ?? 30000,
         );
@@ -234,7 +241,6 @@ export class WebSocketClient {
         this.ready = true;
 
         this.client.emit(Events.READY, this.client);
-
         break;
       }
       default: {

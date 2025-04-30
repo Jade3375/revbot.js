@@ -44,6 +44,9 @@ export class Message extends Base {
   /** The timestamp of when the message was last edited, or `null` if not edited. */
   editedTimestamp: number | null = null;
 
+  /** the reactions and count on a message */
+  reactions: Map<string, string[]> = new Map();
+
   /**
    * Creates a new Message instance.
    *

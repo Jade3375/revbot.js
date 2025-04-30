@@ -18,3 +18,5 @@ export * from "./serverRoleDelete";
 export * from "./serverRoleUpdate";
 export * from "./serverupdate";
 export * from "./userUpdate";
+export * from "./messageReact";
+export * from "./messageUnreact";

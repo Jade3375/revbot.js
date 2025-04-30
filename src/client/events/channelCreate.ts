@@ -1,6 +1,17 @@
 import { Event, API, Events } from "./event";
 
+/**
+ * Represents the event handler for channel creation.
+ *
+ * @extends Event
+ */
 export class ChannelCreate extends Event {
+  /**
+   * Handles the channel creation event.
+   *
+   * @param {API.Channel} data - The raw data for the created channel from the API.
+   * @returns {Promise<{ channel: unknown }>} A promise that resolves with the created channel.
+   */
   async handle(data: API.Channel): Promise<unknown> {
     const channel = this.client.channels._add(data);
 

@@ -1,6 +1,17 @@
 import { Event, API, Events } from "./event";
 
+/**
+ * Represents the event handler for message updates.
+ *
+ * @extends Event
+ */
 export class MessageUpdate extends Event {
+  /**
+   * Handles the message update event.
+   *
+   * @param {{ id: string; channel: string; data: API.Message }} data - The data for the event, containing the message ID, channel ID, and updated message data.
+   * @returns {void}
+   */
   handle(data: { id: string; channel: string; data: API.Message }): void {
     const channel = this.client.channels.cache.get(data.channel);
 
