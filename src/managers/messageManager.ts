@@ -114,7 +114,6 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
     if (!id) {
       throw new TypeError("INVALID_TYPE");
     }
-    console.log(id);
     await this.client.api.delete(`/channels/${this.channel.id}/messages/${id}`);
   }
 

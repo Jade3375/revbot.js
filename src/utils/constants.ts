@@ -1,6 +1,9 @@
 import { clientOptions } from "../client/baseClient";
 import { UUID } from "./UUID";
 
+/**
+ * Enum representing the client events that can be emitted.
+ */
 export enum Events {
   CHANNEL_CREATE = "channelCreate",
   CHANNEL_DELETE = "channelDelete",
@@ -31,6 +34,9 @@ export enum Events {
   USER_UPDATE = "userUpdate",
 }
 
+/**
+ * Enum representing the WebSocket events used for communication.
+ */
 export enum WSEvents {
   AUTHENTICATE = "Authenticate",
   AUTHENTICATED = "Authenticated",
@@ -64,6 +70,9 @@ export enum WSEvents {
   USER_UPDATE = "UserUpdate",
 }
 
+/**
+ * Enum representing the types of channels supported by the client.
+ */
 export enum ChannelTypes {
   DM = "DM",
   GROUP = "GROUP",
@@ -72,6 +81,9 @@ export enum ChannelTypes {
   NOTES = "NOTES",
 }
 
+/**
+ * The default options for configuring the client.
+ */
 export const DEFAULT_CLIENT_OPTIONS: clientOptions = {
   fetchMembers: false,
   rest: {
@@ -84,6 +96,11 @@ export const DEFAULT_CLIENT_OPTIONS: clientOptions = {
   },
 };
 
+/** The WebSocket URL for connecting to the Revolt API. */
 export const wsUrl = "wss://ws.revolt.chat?version=1&format=json";
+
+/** The base API URL for interacting with the Revolt API. */
 export const apiUrl = "https://api.revolt.chat";
+
+/** The system user ID used for identifying system messages. */
 export const SYSTEM_USER_ID = "0".repeat(UUID.TIME_LENGTH + UUID.RANDOM_LENGTH);
