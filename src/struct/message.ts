@@ -280,6 +280,11 @@ export class Message extends Base {
     );
   }
 
+  /**
+   * Removes all reactions from the message.
+   *
+   * @returns {Promise<void>} A promise that resolves when all reactions are removed.
+   */
   removeAllReactions(): Promise<void> {
     return this.channel.messages.removeAllReactions(this);
   }

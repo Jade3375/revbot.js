@@ -7,10 +7,14 @@
 
 ## Installation
 
-To use `revbot.js`, you need to have [Node.js](https://nodejs.org/) installed. Then, install the library and its dependencies using Yarn:
+```bash
+npm install revbot.js
+```
+
+or
 
 ```bash
-yarn install
+yarn add revbot.js
 ```
 
 ## Basic Setup
@@ -20,7 +24,7 @@ Below is an example of how to set up a basic bot using `revbot.js`:
 ### Example Code
 
 ```ts
-import { client } from "./index";
+import { client } from "revbot.js";
 
 const bot = new client({});
 
@@ -36,21 +40,6 @@ bot.on("message", (message) => {
 
 bot.login("YOUR_BOT_TOKEN");
 ```
-
-### Running the Bot
-
-1. Replace `YOUR_BOT_TOKEN` with your actual bot token.
-2. Build the project:
-
-   ```bash
-   yarn build
-   ```
-
-3. Run the bot:
-
-   ```bash
-   node dist/bot.js
-   ```
 
 ## Features
 
@@ -78,12 +67,6 @@ To contribute or modify the library:
 
    ```bash
    yarn build
-   ```
-
-4. Run the test client:
-
-   ```bash
-   yarn testClient
    ```
 
 ## Contribution
