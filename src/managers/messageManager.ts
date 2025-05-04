@@ -1,6 +1,6 @@
 import type { Message as APIMessage, MessageSort } from "revolt-api";
 import { BaseManager } from "./baseManager";
-import { Channel, Message, MessageEmbed } from "../struct/index";
+import { Channel, Emoji, Message, MessageEmbed } from "../struct/index";
 import { UUID } from "../utils/index";
 
 export type MessageResolvable = Message | APIMessage | string;
@@ -208,5 +208,73 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
       coll.set(msg.id, msg);
       return coll;
     }, new Map<string, Message>());
+  }
+
+  /**
+   * add a reaction to a message
+   * @param message The message to react to. Can be a Message object or a message ID.
+   * @param emoji emoji to react with. Can be a string or an Emoji object.
+   * @returns Promise that resolves when the reaction is added
+   */
+  async addReaction(
+    message: MessageResolvable | string,
+    emoji: string | Emoji,
+  ): Promise<void> {
+    const id = this.resolveId(message);
+    if (!id) {
+      throw new TypeError("INVALID_TYPE");
+    }
+    if (emoji instanceof Emoji) emoji = emoji.id;
+    else if (typeof emoji !== "string") {
+      throw new TypeError("INVALID_TYPE");
+    }
+    await this.client.api.put(
+      `/channels/${this.channel.id}/messages/${id}/reactions/${emoji}`,
+    );
+  }
+
+  /**
+   *
+   * @param message The message to unreact. Can be a Message object or a message ID.
+   * @param emoji the emoji to unreact with. Can be a string or an Emoji object.
+   * @param user_id The user ID to remove the reaction for. If not provided, removes the reaction for the current user.
+   * @param remove_all Whether to remove all of the specified reaction for the message. Defaults to false.
+   * @returns Promise that resolves when the reaction is removed
+   */
+  async removeReaction(
+    message: MessageResolvable | string,
+    emoji: string | Emoji,
+    user_id?: string,
+    remove_all = false,
+  ): Promise<void> {
+    const id = this.resolveId(message);
+    if (!id) {
+      throw new TypeError("INVALID_TYPE");
+    }
+    if (emoji instanceof Emoji) emoji = emoji.id;
+    else if (typeof emoji !== "string") {
+      throw new TypeError("INVALID_TYPE");
+    }
+    const queryString = user_id
+      ? `?user_id=${user_id}&remove_all=${remove_all}`
+      : `?remove_all=${remove_all}`;
+    await this.client.api.delete(
+      `/channels/${this.channel.id}/messages/${id}/reactions/${emoji}${queryString}`,
+    );
+  }
+
+  /**
+   * remove all reactions from a message
+   * @param message The message to remove reactions from. Can be a Message object or a message ID.
+   * @returns Promise that resolves when the reactions are removed
+   */
+  async removeAllReactions(message: MessageResolvable | string): Promise<void> {
+    const id = this.resolveId(message);
+    if (!id) {
+      throw new TypeError("INVALID_TYPE");
+    }
+    await this.client.api.delete(
+      `/channels/${this.channel.id}/messages/${id}/reactions`,
+    );
   }
 }

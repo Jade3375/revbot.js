@@ -250,6 +250,41 @@ export class Message extends Base {
   }
 
   /**
+   * Adds a reaction to the message.
+   *
+   * @param {string} emoji - The emoji to react with.
+   * @returns {Promise<void>} A promise that resolves when the reaction is added.
+   */
+  addReaction(emoji: string): Promise<void> {
+    return this.channel.messages.addReaction(this, emoji);
+  }
+
+  /**
+   * Removes a reaction from the message.
+   *
+   * @param {string} emoji - The emoji to remove the reaction for.
+   * @param {object} [options] - Options for removing the reaction.
+   * @param {string} [options.user_id] - The user ID to remove the reaction for. If not provided, removes the reaction for the current user.
+   * @param {boolean} [options.remove_all=false] - Whether to remove all of the specified reaction for the message.
+   * @returns {Promise<void>} A promise that resolves when the reaction is removed.
+   */
+  removeReaction(
+    emoji: string,
+    options?: { user_id?: string; remove_all?: boolean },
+  ): Promise<void> {
+    return this.channel.messages.removeReaction(
+      this,
+      emoji,
+      options?.user_id ?? undefined,
+      options?.remove_all ?? false,
+    );
+  }
+
+  removeAllReactions(): Promise<void> {
+    return this.channel.messages.removeAllReactions(this);
+  }
+
+  /**
    * Checks if the message is in a server.
    *
    * @returns {boolean} `true` if the message is in a server, otherwise `false`.

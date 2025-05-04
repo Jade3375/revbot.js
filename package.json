@@ -1,19 +1,23 @@
 {
   "name": "revbot.js",
   "version": "0.0.1",
-  "description": "A Revolt bot client for Node.js",
-  "main": "dist/index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Jade3375/revbot.js"
-  },
+  "description": "A Revolt bot client used to interact with the revolt api for Node.js, written in TypeScript.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/Jade3375/revbot.js",
   "keywords": [
-    "revolt",
+    "revoltjs",
+    "revolt.js",
     "bot",
     "client",
-    "nodejs",
+    "revbot",
     "typescript"
   ],
+  "homepage": "https://jade3375.github.io/revbot.js/",
   "author": "Jade3375",
   "license": "MIT License",
   "packageManager": "yarn@4.9.1",
@@ -24,6 +28,7 @@
     "eslint-config-prettier": "^10.1.2",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
+    "tsup": "^8.4.0",
     "typedoc": "^0.28.3",
     "typedoc-plugin-extras": "^4.0.0",
     "typedoc-plugin-mdn-links": "^5.0.1",
@@ -37,10 +42,11 @@
   },
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
-    "build": "yarn clean && tsc -p tsconfig.json",
+    "build": "yarn clean && yarn tsup ",
     "start": "yarn build && yarn node --enable-source-maps dist/index.js",
-    "testClient": "yarn build && yarn node --enable-source-maps dist/test.js",
+    "testClient": "yarn test:build && yarn node --enable-source-maps dist/test.js",
     "clean": "rimraf dist",
-    "test:docs": "rimraf docs && yarn typedoc --options static/typedoc.json"
+    "test:docs": "rimraf docs && yarn typedoc --options static/typedoc.json",
+    "test:build": "yarn clean && tsc -p tsconfig.json"
   }
 }
