@@ -25,8 +25,6 @@ export class ServerMemberUpdate extends Event {
     const member = server?.members.cache.get(data.id.user);
     const oldMember = member?._update(updateData);
 
-    console.log(oldMember);
-
     if (
       oldMember &&
       member &&
