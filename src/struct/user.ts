@@ -164,10 +164,10 @@ export class User extends Base {
   /**
    * Fetches the latest data for the user from the API.
    *
-   * @param {boolean} [force=true] - Whether to force a fetch even if the user is cached.
+   * @param {boolean} [force=fasle] - Whether to force a fetch even if the user is cached.
    * @returns {Promise<User>} A promise that resolves with the updated user instance.
    */
-  fetch(force = true): Promise<User> {
+  fetch(force: boolean = false): Promise<User> {
     return this.client.users.fetch(this, { force });
   }
 

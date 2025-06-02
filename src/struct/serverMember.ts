@@ -57,12 +57,18 @@ export class ServerMember extends Base {
     }
 
     if (Array.isArray(data.roles)) {
-      data.roles.forEach((roleId) => {
-        const role = this.server.roles.cache.get(roleId);
-        if (role) {
-          this.roles.push(role);
-        }
-      });
+      if (!data.roles.length) this.roles = [];
+      else {
+        this.roles = data.roles.map((roleId) => {
+          const role = this.server.roles.cache.get(roleId);
+          if (!role) {
+            throw new Error(
+              `Role with ID ${roleId} not found in server ${this.serverId}`,
+            );
+          }
+          return role;
+        });
+      }
     }
 
     for (const field of clear) {

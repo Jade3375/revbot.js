@@ -9,10 +9,10 @@ export class UserManager extends BaseManager<User, APIUser> {
 
   /**
    *
-   * @param user The user to delete
-   * @returns A promise that resolves when the user is deleted
+   * @param user The user to fetch
+   * @returns A promise that resolves when the user is fetched
    */
-  async fetch(user: UserResolvable, { force = true } = {}): Promise<User> {
+  async fetch(user: UserResolvable, { force = false } = {}): Promise<User> {
     const id = this.resolveId(user);
 
     if (!id) throw new TypeError("INVALID_TYPE");
