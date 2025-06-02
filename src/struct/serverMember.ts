@@ -96,6 +96,9 @@ export class ServerMember extends Base {
    */
   async addRole(roleId: string): Promise<this> {
     const currentRoles = this.roles.map((role) => role.id);
+    if (currentRoles.includes(roleId)) {
+      return this; // Role already exists, no need to add it again
+    }
     await this.server.members.edit(this, {
       roles: [...currentRoles, roleId],
     });
@@ -115,6 +118,9 @@ export class ServerMember extends Base {
    */
   async removeRole(roleId: string): Promise<this> {
     const currentRoles = this.roles.map((role) => role.id);
+    if (!currentRoles.includes(roleId)) {
+      return this; // Role does not exist, no need to remove it
+    }
     await this.server.members.edit(this, {
       roles: currentRoles.filter((id) => id !== roleId),
     });
