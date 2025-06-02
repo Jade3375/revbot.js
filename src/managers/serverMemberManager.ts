@@ -1,4 +1,4 @@
-import type { Member } from "revolt-api";
+import type { Member, User as APIUser } from "revolt-api";
 import { BaseManager } from "./baseManager";
 import { Server, ServerMember, User } from "../struct/index";
 
@@ -101,9 +101,16 @@ export class ServerMemberManager extends BaseManager<ServerMember, Member> {
       return this._add(data as Member);
     }
 
-    const { members } = await this.client.api.get<{ members: Member[] }>(
-      `/servers/${this.server.id}/members`,
-    );
+    const { users, members } = await this.client.api.get<{
+      users: APIUser[];
+      members: Member[];
+    }>(`/servers/${this.server.id}/members`);
+
+    users.reduce((coll, cur) => {
+      const user = this.client.users._add(cur);
+      coll.set(user.id, user);
+      return coll;
+    }, this.client.users.cache);
 
     return members.reduce((coll, cur) => {
       const member = this._add(cur);

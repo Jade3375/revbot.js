@@ -1,6 +1,6 @@
 import type { Member as APIMember, FieldsMember } from "revolt-api";
 import { Base } from "./base";
-import { Attachment, Server, User } from "./index";
+import { Attachment, Server, User, Role } from "./index";
 import { client } from "../client/client";
 
 /**
@@ -17,6 +17,9 @@ export class ServerMember extends Base {
 
   /** The avatar of the member, or `null` if none is set. */
   avatar: Attachment | null = null;
+
+  /** roles assigned to the member */
+  roles: Role[] = [];
 
   /**
    * Creates a new ServerMember instance.
@@ -53,6 +56,21 @@ export class ServerMember extends Base {
       this.id = data._id.user;
     }
 
+    if (Array.isArray(data.roles)) {
+      if (!data.roles.length) this.roles = [];
+      else {
+        this.roles = data.roles.map((roleId) => {
+          const role = this.server.roles.cache.get(roleId);
+          if (!role) {
+            throw new Error(
+              `Role with ID ${roleId} not found in server ${this.serverId}`,
+            );
+          }
+          return role;
+        });
+      }
+    }
+
     for (const field of clear) {
       if (field === "Avatar") this.avatar = null;
       if (field === "Nickname") this.nickname = null;
@@ -74,6 +92,44 @@ export class ServerMember extends Base {
    */
   async setNickname(nickname?: string): Promise<this> {
     await this.server.members.edit(this, { nickname });
+    return this;
+  }
+
+  /**
+   * adds a role to the server member.
+   * @param roleId - The ID of the role to add to the member.
+   * @returns
+   */
+  async addRole(roleId: string): Promise<this> {
+    const currentRoles = this.roles.map((role) => role.id);
+    if (currentRoles.includes(roleId)) {
+      return this; // Role already exists, no need to add it again
+    }
+    await this.server.members.edit(this, {
+      roles: [...currentRoles, roleId],
+    });
+    return this;
+  }
+
+  /**
+   * Removes a role from the server member.
+   *
+   * @param {string} roleId - The ID of the role to remove from the member.
+   * @returns {Promise<this>} A promise that resolves with the updated server member instance.
+   *
+   * @example
+   * ```typescript
+   * await member.removeRole("roleId");
+   * ```
+   */
+  async removeRole(roleId: string): Promise<this> {
+    const currentRoles = this.roles.map((role) => role.id);
+    if (!currentRoles.includes(roleId)) {
+      return this; // Role does not exist, no need to remove it
+    }
+    await this.server.members.edit(this, {
+      roles: currentRoles.filter((id) => id !== roleId),
+    });
     return this;
   }
 
