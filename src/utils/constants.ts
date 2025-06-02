@@ -85,7 +85,7 @@ export enum ChannelTypes {
  * The default options for configuring the client.
  */
 export const DEFAULT_CLIENT_OPTIONS: clientOptions = {
-  fetchMembers: false,
+  fetchMembers: true,
   rest: {
     timeout: 15000,
     retries: 3,
