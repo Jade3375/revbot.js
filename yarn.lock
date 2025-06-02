@@ -587,15 +587,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.26.1":
-  version: 0.26.1
-  resolution: "axios@npm:0.26.1"
-  dependencies:
-    follow-redirects: "npm:^1.14.8"
-  checksum: 10c0/77ad7f1e6ca04fcd3fa8af1795b09d8b7c005b71a31f28d99ba40cda0bdcc12a4627801d7fac5efa62b9f667a8402bd54c669039694373bc8d44f6be611f785c
-  languageName: node
-  linkType: hard
-
 "axios@npm:^1.9.0":
   version: 1.9.0
   resolution: "axios@npm:1.9.0"
@@ -969,7 +960,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.15.6":
+"follow-redirects@npm:^1.15.6":
   version: 1.15.9
   resolution: "follow-redirects@npm:1.15.9"
   peerDependenciesMeta:
@@ -1272,13 +1263,6 @@ __metadata:
   version: 0.2.5
   resolution: "load-tsconfig@npm:0.2.5"
   checksum: 10c0/bf2823dd26389d3497b6567f07435c5a7a58d9df82e879b0b3892f87d8db26900f84c85bc329ef41c0540c0d6a448d1c23ddc64a80f3ff6838b940f3915a3fcb
-  languageName: node
-  linkType: hard
-
-"lodash.defaultsdeep@npm:^4.6.1":
-  version: 4.6.1
-  resolution: "lodash.defaultsdeep@npm:4.6.1"
-  checksum: 10c0/0031ca3055d5482fc2e9b55d0ee174a3e956039996fac52dbe94ca67eb50bb72ffc75d0eb86bcc782fefc597ebbc1798df941f27382bec23138e53180427700b
   languageName: node
   linkType: hard
 
@@ -1704,7 +1688,7 @@ __metadata:
     axios: "npm:^1.9.0"
     eslint-config-prettier: "npm:^10.1.2"
     prettier: "npm:^3.5.3"
-    revolt-api: "npm:^0.8.4"
+    revolt-api: "npm:^0.8.6-1"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.4.0"
     typedoc: "npm:^0.28.3"
@@ -1716,13 +1700,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"revolt-api@npm:^0.8.4":
-  version: 0.8.4
-  resolution: "revolt-api@npm:0.8.4"
-  dependencies:
-    axios: "npm:^0.26.1"
-    lodash.defaultsdeep: "npm:^4.6.1"
-  checksum: 10c0/9e2226d79bf6a23c2270906ee7cbcbea48a64df632b495f36077482dcca3c70e7948e3e24f987ba29c9482e8314a7b6cf30c33298d668ea8625488738250e07f
+"revolt-api@npm:^0.8.6-1":
+  version: 0.8.6
+  resolution: "revolt-api@npm:0.8.6"
+  checksum: 10c0/7bce1af14bebeaccf5d8027bd090d231b1d3b56167065665b1b6f4b6176479c4c16859c3ba3de51f9dfa585bd8b613e8d4dee82dc43e8cc248058d17b4a27677
   languageName: node
   linkType: hard
 
