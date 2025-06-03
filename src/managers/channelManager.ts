@@ -101,7 +101,7 @@ export class ChannelManager extends BaseManager<Channel, APIChannel> {
    */
   resolve(channel: ChannelResolvable): Channel | null {
     if (channel instanceof Channel) return channel;
-    return super.resolve(channel);
+    return super.resolve(channel) ?? null;
   }
 
   /**

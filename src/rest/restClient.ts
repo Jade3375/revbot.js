@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { BaseClient } from "../client/baseClient";
 import { apiUrl } from "../utils";
-import { config } from "process";
+import { version } from "../../package.json";
 
 export class RestClient {
   constructor(private readonly client: BaseClient) {}
@@ -30,6 +30,7 @@ export class RestClient {
         data: body?.body,
         headers: {
           "X-Bot-Token": this.client.token,
+          "User-Agent": `RevBot.js/${version}`,
         },
       };
 

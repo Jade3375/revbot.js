@@ -1,6 +1,6 @@
 {
   "name": "revbot.js",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A Revolt bot client used to interact with the revolt api for Node.js, written in TypeScript.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "axios": "^1.9.0",
+    "form-data": "^4.0.2",
     "revolt-api": "^0.8.6-1",
     "ws": "^8.18.1"
   },

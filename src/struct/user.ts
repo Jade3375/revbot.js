@@ -5,7 +5,7 @@ import type {
   Channel as APIChannel,
 } from "revolt-api";
 import { client } from "../client/client";
-import { Badges, UUID } from "../utils/index";
+import { Badges, cdnUrl, UUID } from "../utils/index";
 
 /**
  * Represents a user in the client.
@@ -144,22 +144,15 @@ export class User extends Base {
     return this.client.channels._add(data as APIChannel) as DMChannel;
   }
 
-  // avatarURL(options?: { size: number }): string | null {
-  //   return this.avatar
-  //     ? this.client.api.cdn.avatar(
-  //         this.avatar.id,
-  //         this.avatar.filename,
-  //         options?.size,
-  //       )
-  //     : null;
-  // }
+  avatarURL(): string | undefined {
+    if (!this.avatar || !this.avatar?.id) return undefined;
+    return `${cdnUrl}/avatars/${this.avatar?.id}`;
+  }
 
-  // async displayAvatarURL(options?: { size: number }): Promise<string> {
-  //   const defaultAvatar = (await this.client.api.get(
-  //     `/users/${this.id}/default_avatar`,
-  //   )) as string;
-  //   return this.avatarURL(options) ?? defaultAvatar;
-  // }
+  async displayAvatarURL(): Promise<string> {
+    const defaultAvatar = `${cdnUrl}/users/${this.id}/default_avatar`;
+    return this.avatarURL() ?? defaultAvatar;
+  }
 
   /**
    * Fetches the latest data for the user from the API.

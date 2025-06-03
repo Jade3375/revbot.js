@@ -102,5 +102,8 @@ export const wsUrl = "wss://ws.revolt.chat?version=1&format=json";
 /** The base API URL for interacting with the Revolt API. */
 export const apiUrl = "https://api.revolt.chat";
 
+/** The base URL for the Revolt CDN, used for serving static assets. */
+export const cdnUrl = "https://cdn.revoltusercontent.com";
+
 /** The system user ID used for identifying system messages. */
 export const SYSTEM_USER_ID = "0".repeat(UUID.TIME_LENGTH + UUID.RANDOM_LENGTH);

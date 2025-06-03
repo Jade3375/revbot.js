@@ -10,6 +10,7 @@ import { Events } from "../utils/constants";
 import { RestClient } from "../rest/restClient";
 import { Message } from "../struct/index";
 import { client } from "./client";
+import { CDNClient } from "../rest/CDNClient";
 
 /**
  * Represents the base client that provides core functionality for interacting with the API.
@@ -148,6 +149,9 @@ export abstract class BaseClient extends EventEmitter {
   /** The REST client for making API requests. */
   readonly api: RestClient;
 
+  /** The CDN client for accessing media resources. */
+  readonly cdn: CDNClient;
+
   /** The authentication token for the client. */
   #token: string | null = null;
 
@@ -168,6 +172,7 @@ export abstract class BaseClient extends EventEmitter {
       ...options,
     };
     this.api = new RestClient(this);
+    this.cdn = new CDNClient(this);
   }
 
   /**
