@@ -1,3 +1,3 @@
-export type CDNAttachmentResponce = {
+export type CDNAttachmentResponse = {
   id: string;
 };

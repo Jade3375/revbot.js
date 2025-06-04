@@ -5,7 +5,7 @@ import axios from "axios";
 import { BaseManager } from "./baseManager";
 import { Channel, Emoji, Message, MessageEmbed } from "../struct/index";
 import { UUID } from "../utils/index";
-import { CDNAttachmentResponce } from "../utils/types";
+import { CDNAttachmentResponse } from "../utils/types";
 
 export type MessageResolvable = Message | APIMessage | string;
 
@@ -84,7 +84,7 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
         }
 
         await this.client.cdn.post("/attachments", data).then((attachment) => {
-          const { id } = attachment as CDNAttachmentResponce;
+          const { id } = attachment as CDNAttachmentResponse;
           attachments.push(id);
         });
       });
