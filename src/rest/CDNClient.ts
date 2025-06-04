@@ -28,11 +28,11 @@ export class CDNClient {
         url: `${cdnUrl}${url}`,
         params: query,
         data,
+        maxBodyLength: Infinity,
         headers: {
           "X-Bot-Token": this.client.token,
           "Content-Type": "multipart/form-data",
           "User-Agent": `RevBot.js/${version}`,
-          maxBodyLength: Infinity,
           ...data.getHeaders(),
         },
       };
