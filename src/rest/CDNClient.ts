@@ -48,7 +48,7 @@ export class CDNClient {
   /**
    * POST request.
    * @param url The URL for the request.
-   * @param FormData The request body.
+   * @param data The request body.
    * @param query Query parameters (if applicable).
    * @returns The API response.
    */

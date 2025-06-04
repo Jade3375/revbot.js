@@ -1,4 +1,5 @@
 import type { Message as APIMessage, MessageSort } from "revolt-api";
+import { File } from "node:buffer";
 import { Readable } from "stream";
 import FormData from "form-data";
 import axios from "axios";
