@@ -145,7 +145,7 @@ export class User extends Base {
   }
 
   avatarURL(): string | undefined {
-    if (!this.avatar || !this.avatar?.id) return undefined;
+    if (!this.avatar?.id) return undefined;
     return `${cdnUrl}/avatars/${this.avatar?.id}`;
   }
 

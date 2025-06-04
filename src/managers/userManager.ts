@@ -35,7 +35,7 @@ export class UserManager extends BaseManager<User, APIUser> {
   resolve(resolvable: Message | User): User;
   resolve(resolvable: string | APIUser): User | null;
   resolve(resolvable: User | APIUser | string | Message): User | null {
-    if (resolvable instanceof Message) return resolvable.author ?? null;
+    if (resolvable instanceof Message) return resolvable.author;
     return super.resolve(resolvable);
   }
 

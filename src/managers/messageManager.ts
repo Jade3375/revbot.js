@@ -1,6 +1,6 @@
 import type { Message as APIMessage, MessageSort } from "revolt-api";
-import { ReadStream } from "fs";
-import FormData = require("form-data");
+import { Readable } from "stream";
+import FormData from "form-data";
 import axios from "axios";
 import { BaseManager } from "./baseManager";
 import { Channel, Emoji, Message, MessageEmbed } from "../struct/index";
@@ -17,7 +17,7 @@ export interface MessageReply {
 export interface MessageOptions {
   content?: string;
   replies?: MessageReply[];
-  attachments?: ReadStream[] | string[] | File[];
+  attachments?: Readable[] | string[] | File[];
   embeds?: MessageEmbed[];
 }
 
@@ -68,13 +68,13 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
         if (typeof att === "string") {
           const readableStream = (await axios.get(att, {
             responseType: "stream",
-          })) as { data: ReadStream };
+          })) as { data: Readable };
           data.append("file", readableStream.data, {
             filename: att.split("/").pop(),
           });
         }
 
-        if (att instanceof ReadStream) {
+        if (att instanceof Readable) {
           data.append("file", att);
         }
 
