@@ -61,10 +61,10 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
   async send(content: MessageOptions | string): Promise<Message> {
     if (typeof content === "string") content = { content };
     let attachments: string[] = [];
-    const data = new FormData();
 
     if (Array.isArray(content.attachments)) {
-      const promices = content.attachments.map(async (att) => {
+      const promises = content.attachments.map(async (att) => {
+        const data = new FormData();
         if (typeof att === "string") {
           const readableStream = (await axios.get(att, {
             responseType: "stream",
@@ -88,7 +88,7 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
           attachments.push(id);
         });
       });
-      await Promise.all(promices);
+      await Promise.all(promises);
     }
 
     const resp = (await this.client.api.post(
