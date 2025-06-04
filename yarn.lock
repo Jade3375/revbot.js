@@ -980,7 +980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^4.0.0":
+"form-data@npm:^4.0.0, form-data@npm:^4.0.2":
   version: 4.0.2
   resolution: "form-data@npm:4.0.2"
   dependencies:
@@ -1687,6 +1687,7 @@ __metadata:
     "@types/ws": "npm:^8.18.1"
     axios: "npm:^1.9.0"
     eslint-config-prettier: "npm:^10.1.2"
+    form-data: "npm:^4.0.2"
     prettier: "npm:^3.5.3"
     revolt-api: "npm:^0.8.6-1"
     rimraf: "npm:^6.0.1"

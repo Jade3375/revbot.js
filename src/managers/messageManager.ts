@@ -1,7 +1,12 @@
 import type { Message as APIMessage, MessageSort } from "revolt-api";
+import { File } from "node:buffer";
+import { Readable } from "stream";
+import FormData from "form-data";
+import axios from "axios";
 import { BaseManager } from "./baseManager";
 import { Channel, Emoji, Message, MessageEmbed } from "../struct/index";
 import { UUID } from "../utils/index";
+import { CDNAttachmentResponse } from "../utils/types";
 
 export type MessageResolvable = Message | APIMessage | string;
 
@@ -13,7 +18,7 @@ export interface MessageReply {
 export interface MessageOptions {
   content?: string;
   replies?: MessageReply[];
-  attachments?: string[];
+  attachments?: Readable[] | string[] | File[];
   embeds?: MessageEmbed[];
 }
 
@@ -50,21 +55,50 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
    * @param content The content to send. Can be a string or an object with the following properties:
    * - content: The content of the message
    * - replies: An array of message IDs to reply to
-   * - attachments: An array of attachment URLs
+   * - attachments: An array of attachment URLs, Files, or ReadStreams
    * - embeds: An array of MessageEmbed objects
    * @returns Promise that resolves to the sent message
    */
   async send(content: MessageOptions | string): Promise<Message> {
     if (typeof content === "string") content = { content };
+    let attachments: string[] = [];
 
-    const data = (await this.client.api.post(
+    if (Array.isArray(content.attachments)) {
+      const promises = content.attachments.map(async (att) => {
+        const data = new FormData();
+        if (typeof att === "string") {
+          const readableStream = (await axios.get(att, {
+            responseType: "stream",
+          })) as { data: Readable };
+          data.append("file", readableStream.data, {
+            filename: att.split("/").pop(),
+          });
+        }
+
+        if (att instanceof Readable) {
+          data.append("file", att);
+        }
+
+        if (att instanceof File) {
+          const buffer = Buffer.from(await att.arrayBuffer());
+          data.append("file", buffer, { filename: att.name });
+        }
+
+        await this.client.cdn.post("/attachments", data).then((attachment) => {
+          const { id } = attachment as CDNAttachmentResponse;
+          attachments.push(id);
+        });
+      });
+      await Promise.all(promises);
+    }
+
+    const resp = (await this.client.api.post(
       `/channels/${this.channel.id}/messages`,
       {
-        body: { ...content, nonce: UUID.generate() },
+        body: { ...content, attachments, nonce: UUID.generate() },
       },
     )) as APIMessage;
-
-    return this._add(data);
+    return this._add(resp);
   }
 
   /**

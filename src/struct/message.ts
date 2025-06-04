@@ -1,6 +1,6 @@
 import type { File, Message as APIMessage, SystemMessage } from "revolt-api";
 import type { client } from "../client/client";
-import type { MessageEditOptions } from "../managers/index";
+import type { MessageEditOptions, MessageOptions } from "../managers/index";
 import {
   Base,
   DMChannel,
@@ -27,10 +27,10 @@ export class Message extends Base {
   content = "";
 
   /** The ID of the channel where the message was sent. */
-  channelId!: string;
+  channelId = "";
 
   /** The ID of the user who authored the message. */
-  authorId!: string;
+  authorId = "";
 
   /** An array of embeds included in the message. */
   embeds: Embed[] = [];
@@ -223,9 +223,12 @@ export class Message extends Base {
    * @param {boolean} [mention=true] - Whether to mention the original message author.
    * @returns {Promise<Message>} A promise that resolves with the sent reply message.
    */
-  reply(content: string, mention = true): Promise<Message> {
+  reply(
+    content: MessageOptions | string,
+    mention: boolean = true,
+  ): Promise<Message> {
     return this.channel.messages.send({
-      content,
+      ...(typeof content === "object" ? content : { content }),
       replies: [{ id: this.id, mention }],
     });
   }
