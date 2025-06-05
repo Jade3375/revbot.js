@@ -1,4 +1,8 @@
-import type { Message as APIMessage, MessageSort } from "revolt-api";
+import type {
+  Message as APIMessage,
+  MessageSort,
+  SendableEmbed,
+} from "revolt-api";
 import { File } from "node:buffer";
 import { Readable } from "stream";
 import FormData from "form-data";
@@ -62,6 +66,7 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
   async send(content: MessageOptions | string): Promise<Message> {
     if (typeof content === "string") content = { content };
     let attachments: string[] = [];
+    let embeds: SendableEmbed[] = [];
 
     if (Array.isArray(content.attachments)) {
       const promises = content.attachments.map(async (att) => {
@@ -92,10 +97,14 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
       await Promise.all(promises);
     }
 
+    if (Array.isArray(content.embeds)) {
+      content.embeds.map((embed) => embeds.push(embed.toJSON()));
+    }
+
     const resp = (await this.client.api.post(
       `/channels/${this.channel.id}/messages`,
       {
-        body: { ...content, attachments, nonce: UUID.generate() },
+        body: { ...content, attachments, embeds, nonce: UUID.generate() },
       },
     )) as APIMessage;
     return this._add(resp);

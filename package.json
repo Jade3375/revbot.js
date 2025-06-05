@@ -19,7 +19,7 @@
   ],
   "homepage": "https://jade3375.github.io/revbot.js/",
   "author": "Jade3375",
-  "license": "MIT License",
+  "license": "MIT",
   "packageManager": "yarn@4.9.1",
   "devDependencies": {
     "@mxssfd/typedoc-theme": "^1.1.7",
