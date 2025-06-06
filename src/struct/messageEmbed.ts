@@ -1,4 +1,10 @@
 import type { Embed as APIEmbed, Special, SendableEmbed } from "revolt-api";
+import { client } from "../client/client";
+import { Readable } from "stream";
+import axios from "axios";
+import FormData from "form-data";
+import { File } from "node:buffer";
+import { CDNAttachmentResponse } from "../utils/types";
 
 export type Embed = APIEmbed;
 export type EmbedImage = Extract<Embed, { type: "Image" }>;
@@ -14,7 +20,7 @@ export class MessageEmbed {
   #description?: string;
   #icon_url?: string;
   #color?: string;
-  #media?: string;
+  #media?: Readable | string | File;
 
   /**
    * Sets the title of the embed.
@@ -74,12 +80,57 @@ export class MessageEmbed {
   /**
    * Sets the media (e.g., image or video) of the embed.
    *
-   * @param {string} media - The media URL to set.
+   * @param {Readable | string | File} media - The media URL, File or Stream to set.
    * @returns {this} The updated `MessageEmbed` instance.
    */
-  setMedia(media: string): this {
+  setMedia(media: Readable | string | File): this {
     this.#media = media;
     return this;
+  }
+
+  /**
+   *
+   * @param client The client instance used to send the embed.
+   * @returns SendableEmbed
+   * Converts the embed to a JSON object that can be sent to the API, including media handling.
+   */
+  async toJSONWithMedia(client: client): Promise<SendableEmbed> {
+    const embed: SendableEmbed = {
+      title: this.#title,
+      icon_url: this.#icon_url,
+      colour: this.#color,
+      description: this.#description,
+      url: this.#url,
+    };
+
+    if (this.#media) {
+      let att = this.#media;
+      const data = new FormData();
+      if (typeof att === "string") {
+        const readableStream = (await axios.get(att, {
+          responseType: "stream",
+        })) as { data: Readable };
+        data.append("file", readableStream.data, {
+          filename: att.split("/").pop(),
+        });
+      }
+
+      if (att instanceof Readable) {
+        data.append("file", att);
+      }
+
+      if (att instanceof File) {
+        const buffer = Buffer.from(await att.arrayBuffer());
+        data.append("file", buffer, { filename: att.name });
+      }
+
+      await client.cdn.post("/attachments", data).then((attachment) => {
+        const { id } = attachment as CDNAttachmentResponse;
+        embed.media = id;
+      });
+    }
+
+    return embed;
   }
 
   /**
@@ -90,11 +141,11 @@ export class MessageEmbed {
   toJSON(): SendableEmbed {
     return {
       title: this.#title,
-      description: this.#description,
-      url: this.#url,
       icon_url: this.#icon_url,
       colour: this.#color,
-      media: this.#media,
+      description: this.#description,
+      url: this.#url,
+      media: this.#media?.toString(),
     };
   }
 }
