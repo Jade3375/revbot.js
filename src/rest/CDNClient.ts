@@ -23,6 +23,7 @@ export class CDNClient {
     try {
       if (!this.client.token) throw new Error("Token is required");
 
+      const authHeader = this.client.bot ? "X-Bot-Token" : "X-Session-Token";
       const config: AxiosRequestConfig = {
         method,
         url: `${cdnUrl}${url}`,
@@ -30,7 +31,7 @@ export class CDNClient {
         data,
         maxBodyLength: Infinity,
         headers: {
-          "X-Bot-Token": this.client.token,
+          [authHeader]: this.client.token,
           "Content-Type": "multipart/form-data",
           "User-Agent": `RevBot.js/${version}`,
           ...data.getHeaders(),

@@ -123,6 +123,9 @@ export interface clientOptions {
   /** Whether to fetch all members of a server. */
   fetchMembers?: boolean;
 
+  /** wether to use X-Session-Token or X-Bot-Token*/
+  isBot?: boolean;
+
   /** Configuration for REST API requests. */
   rest?: {
     /** The timeout for REST requests in milliseconds. */
@@ -171,6 +174,7 @@ export abstract class BaseClient extends EventEmitter {
     this.options = {
       ...options,
     };
+    this.bot = this.options.isBot ?? true;
     this.api = new RestClient(this);
     this.cdn = new CDNClient(this);
   }

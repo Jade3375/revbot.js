@@ -23,13 +23,14 @@ export class RestClient {
     try {
       if (!this.client.token) throw new Error("Token is required");
 
+      const authHeader = this.client.bot ? "X-Bot-Token" : "X-Session-Token";
       const config: AxiosRequestConfig = {
         method,
         url: `${apiUrl}${url}`,
         params: query,
         data: body?.body,
         headers: {
-          "X-Bot-Token": this.client.token,
+          [authHeader]: this.client.token,
           "User-Agent": `RevBot.js/${version}`,
         },
       };
