@@ -98,7 +98,11 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
     }
 
     if (Array.isArray(content.embeds)) {
-      content.embeds.map((embed) => embeds.push(embed.toJSON()));
+      const promises = content.embeds.map(async (embed) => {
+        const json = await embed.toJSONWithMedia(this.client);
+        embeds.push(json);
+      });
+      await Promise.all(promises);
     }
 
     const resp = (await this.client.api.post(
