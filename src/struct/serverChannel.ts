@@ -1,7 +1,7 @@
 import type { Channel as APIChannel, FieldsChannel } from "revolt-api";
 import { Attachment, Category, Channel, Invite, Server } from "./index";
 import { client } from "../client/client";
-import { ChannelPermissions } from "../utils/index";
+import { ChannelPermissions, FullPermissions } from "../utils/index";
 
 type APIServerChannel = Extract<
   APIChannel,
@@ -9,8 +9,8 @@ type APIServerChannel = Extract<
 >;
 
 export interface Overwrite {
-  allow: ChannelPermissions;
-  deny: ChannelPermissions;
+  allow: FullPermissions;
+  deny: FullPermissions;
 }
 
 /**
@@ -73,8 +73,8 @@ export class ServerChannel extends Channel {
       this.overwrites.clear();
       for (const [id, { a, d }] of Object.entries(data.role_permissions)) {
         this.overwrites.set(id, {
-          allow: new ChannelPermissions(a),
-          deny: new ChannelPermissions(d),
+          allow: new FullPermissions(a),
+          deny: new FullPermissions(d),
         });
       }
     }
