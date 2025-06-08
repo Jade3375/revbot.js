@@ -1,6 +1,5 @@
 import { BaseManager } from "./baseManager";
 import { Server } from "../struct/index";
-import { UUID } from "../utils/index";
 import { Server as APIServer } from "revolt-api";
 
 export type ServerResolvable = Server | APIServer | string;

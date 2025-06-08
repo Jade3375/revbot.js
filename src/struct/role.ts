@@ -1,6 +1,7 @@
 import type { Role as APIRole, FieldsRole } from "revolt-api";
 import { Base, Overwrite, Server } from "./index";
-import { ChannelPermissions, UUID } from "../utils/index";
+import { FullPermissions, UUID } from "../utils/index";
+import { editableRole } from "../utils/types";
 
 /**
  * Represents a role in a server.
@@ -62,8 +63,8 @@ export class Role extends Base {
     if (data.permissions) {
       const { a, d } = data.permissions;
       this.overwrite = {
-        allow: new ChannelPermissions(a),
-        deny: new ChannelPermissions(d),
+        allow: new FullPermissions(a),
+        deny: new FullPermissions(d),
       };
     }
 
@@ -114,6 +115,10 @@ export class Role extends Base {
    */
   delete(): Promise<void> {
     return this.server.roles.delete(this);
+  }
+
+  edit(data: editableRole): Promise<Role> {
+    return this.server.roles.edit(this, data);
   }
 
   /**

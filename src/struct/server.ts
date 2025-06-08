@@ -6,7 +6,7 @@ import {
   ServerChannelManager,
   ServerMemberManager,
 } from "../managers/index";
-import { ServerPermissions, UUID } from "../utils/index";
+import { FullPermissions, UUID } from "../utils/index";
 
 /**
  * Represents a server (guild) in the client.
@@ -48,7 +48,7 @@ export class Server extends Base {
   nsfw = false;
 
   /** The default permissions for the server. */
-  permissions!: ServerPermissions;
+  permissions!: FullPermissions;
 
   /** The categories in the server. */
   categories = new Map<string, Category>();
@@ -120,9 +120,7 @@ export class Server extends Base {
     }
 
     if (typeof data.default_permissions === "number") {
-      this.permissions = new ServerPermissions(
-        data.default_permissions,
-      ).freeze();
+      this.permissions = new FullPermissions(data.default_permissions).freeze();
     }
 
     if (typeof data.analytics === "boolean") this.analytics = data.analytics;
