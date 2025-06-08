@@ -6,6 +6,9 @@ export type BitFieldResolvable =
   | string
   | BitFieldResolvable[];
 
+/**
+ * Represents a bitfield that can be used to manage flags or permissions.
+ */
 export class BitField {
   static FLAGS: Record<string, number> = {};
   bitfield = DEFAULT_BIT;
@@ -13,6 +16,11 @@ export class BitField {
     this.bitfield = this.self.resolve(bits);
   }
 
+  /**
+   * Resolves a bitfield or an array of bitfields into a single number.
+   * @param bit The bitfield or array of bitfields to resolve.
+   * @returns The resolved bitfield as a number.
+   */
   static resolve(bit: BitFieldResolvable): number {
     if (bit instanceof BitField) return bit.bitfield;
     if (typeof bit === "number" && bit >= DEFAULT_BIT) return bit;
@@ -24,6 +32,10 @@ export class BitField {
     if (typeof this.FLAGS[bit] !== "undefined") return this.FLAGS[bit];
     throw new Error("BITFIELD_INVALID");
   }
+  /**
+   * Returns the class that this instance belongs to.
+   * @returns The class of the bitfield.
+   */
   get self(): {
     FLAGS: Record<string, number>;
     resolve(bit: BitFieldResolvable): number;
@@ -36,16 +48,28 @@ export class BitField {
     };
   }
 
+  /**
+   * Checks if any of the bits in the bitfield are set.
+   * @param bit The bitfield or array of bitfields to check.
+   * @returns True if any bits are set, false otherwise.
+   */
   any(bit: BitFieldResolvable): boolean {
     bit = this.self.resolve(bit);
     return (this.bitfield & bit) !== DEFAULT_BIT;
   }
 
+  /**
+   * checks if a specific permission is set.
+   */
   has(bit: BitFieldResolvable): boolean {
     bit = this.self.resolve(bit);
     return (this.bitfield & bit) === bit;
   }
 
+  /**
+   * Returns an array of all the Permissions that are set in the bitfield.
+   * @returns An array of flag names.
+   */
   toArray(): string[] {
     return Object.keys(this.self.FLAGS).filter((bit) => this.has(bit));
   }
@@ -90,6 +114,10 @@ export class BitField {
     return this.bitfield;
   }
 
+  /**
+   *
+   * @returns A record of all flags and their boolean values indicating whether they are set.
+   */
   serialize(): Record<string, boolean> {
     const serialized: Record<string, boolean> = {};
     for (const [flag, bit] of Object.entries(this.self.FLAGS)) {
