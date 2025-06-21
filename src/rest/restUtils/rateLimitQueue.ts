@@ -82,13 +82,7 @@ export class RateLimitQueue {
       state.lastPath = path;
     }
 
-    console.log(
-      `Rate limit updated for bucket ${bucket} on path ${path}. Limit: ${limit}, Remaining: ${remaining}, Reset after: ${resetAfter} ms`,
-    );
     if (remaining <= 0) {
-      console.warn(
-        `Rate limit exceeded for bucket ${bucket} on path ${path}. Remaining: ${remaining}, Reset after: ${new Date(resetAfter).toISOString()}`,
-      );
       if (state.resetTimeout) clearTimeout(state.resetTimeout);
       const delay = resetIn;
       state.resetTimeout = setTimeout(() => {
