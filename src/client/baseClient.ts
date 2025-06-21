@@ -6,7 +6,7 @@ import type {
   User,
 } from "../struct/index";
 import { EventEmitter } from "node:events";
-import { Events } from "../utils/constants";
+import { DEFAULT_CLIENT_OPTIONS, Events } from "../utils/constants";
 import { RestClient } from "../rest/restClient";
 import { Message } from "../struct/index";
 import { client } from "./client";
@@ -172,6 +172,7 @@ export abstract class BaseClient extends EventEmitter {
   constructor(options: clientOptions = {}) {
     super();
     this.options = {
+      ...DEFAULT_CLIENT_OPTIONS,
       ...options,
     };
     this.bot = this.options.isBot ?? true;
