@@ -52,9 +52,8 @@ export class RestClient {
           return this.retryRequest<T>(0, method, url, body, query);
         }
         if (error.status) {
-          console.error(`API call failed with status ${error.status}:`, error);
           throw new Error(
-            `API call failed with status ${error.status}: ${error.message}`,
+            `API call failed with status ${error.status}: ${error.response?.statusText}`,
           );
         }
       }
