@@ -2,8 +2,10 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { BaseClient } from "../client/baseClient";
 import { apiUrl } from "../utils";
 import { version } from "../../package.json";
+import { RateLimitQueue } from "./restUtils/rateLimitQueue";
 
 export class RestClient {
+  private rateLimitQueue = new RateLimitQueue();
   constructor(private readonly client: BaseClient) {}
 
   /**
@@ -24,18 +26,23 @@ export class RestClient {
       if (!this.client.token) throw new Error("Token is required");
 
       const authHeader = this.client.bot ? "X-Bot-Token" : "X-Session-Token";
-      const config: AxiosRequestConfig = {
-        method,
-        url: `${apiUrl}${url}`,
-        params: query,
-        data: body?.body,
-        headers: {
-          [authHeader]: this.client.token,
-          "User-Agent": `RevBot.js/${version}`,
+      const config: AxiosRequestConfig & { url: string } = {
+        ...{
+          method,
+          url: `${apiUrl}${url}`,
+          params: query,
+          data: body?.body,
+          headers: {
+            [authHeader]: this.client.token,
+            "User-Agent": `RevBot.js/${version}`,
+          },
         },
+        url: `${apiUrl}${url}`,
       };
 
-      const response: AxiosResponse<T> = await axios(config);
+      // Use the rate limit queue for all requests
+      const response: AxiosResponse<T> =
+        await this.rateLimitQueue.request<T>(config);
       return response.data;
     } catch (error) {
       console.error("API call failed:", error);

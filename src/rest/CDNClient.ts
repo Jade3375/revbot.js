@@ -3,7 +3,9 @@ import { BaseClient } from "../client/baseClient";
 import { cdnUrl } from "../utils";
 import { version } from "../../package.json";
 import FormData from "form-data";
+import { RateLimitQueue } from "./restUtils/rateLimitQueue";
 export class CDNClient {
+  private rateLimitQueue = new RateLimitQueue();
   constructor(private readonly client: BaseClient) {}
 
   /**
@@ -24,21 +26,26 @@ export class CDNClient {
       if (!this.client.token) throw new Error("Token is required");
 
       const authHeader = this.client.bot ? "X-Bot-Token" : "X-Session-Token";
-      const config: AxiosRequestConfig = {
-        method,
-        url: `${cdnUrl}${url}`,
-        params: query,
-        data,
-        maxBodyLength: Infinity,
-        headers: {
-          [authHeader]: this.client.token,
-          "Content-Type": "multipart/form-data",
-          "User-Agent": `RevBot.js/${version}`,
-          ...data.getHeaders(),
+      const config: AxiosRequestConfig & { url: string } = {
+        ...{
+          method,
+          url: `${cdnUrl}${url}`,
+          params: query,
+          data,
+          maxBodyLength: Infinity,
+          headers: {
+            [authHeader]: this.client.token,
+            "Content-Type": "multipart/form-data",
+            "User-Agent": `RevBot.js/${version}`,
+            ...data.getHeaders(),
+          },
         },
+        url: `${cdnUrl}${url}`,
       };
 
-      const response: AxiosResponse<T> = await axios(config);
+      // Use the rate limit queue for all requests
+      const response: AxiosResponse<T> =
+        await this.rateLimitQueue.request<T>(config);
       return response.data;
     } catch (error) {
       console.error("API call failed:", error);
