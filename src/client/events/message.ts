@@ -19,7 +19,7 @@ export class Message extends Event {
     if (channel?.isText()) {
       const message = channel.messages._add(data);
 
-      if (data.author !== SYSTEM_USER_ID) {
+      if (data.author !== SYSTEM_USER_ID && !data.webhook) {
         await this.client.users.fetch(data.author, { force: false });
       }
 
