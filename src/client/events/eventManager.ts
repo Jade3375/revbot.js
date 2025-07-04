@@ -1,4 +1,4 @@
-import * as Events from "./index";
+import { EventMap } from "./index";
 import { Event as CustomEvent } from "./event";
 import type { client } from "../client";
 
@@ -15,7 +15,7 @@ export class EventManager {
    * @param {client} client - The client instance.
    */
   constructor(protected readonly client: client) {
-    for (const Event of Object.values(Events)) {
+    for (const Event of Object.values(EventMap)) {
       this.register(Event as new (client: client) => CustomEvent);
     }
   }

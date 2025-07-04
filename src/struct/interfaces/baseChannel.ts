@@ -1,5 +1,5 @@
 import type {
-  Message,
+  MessageStruct,
   MessageManager,
   MessageOptions,
   MessageResolvable,
@@ -16,7 +16,7 @@ export interface TextBasedChannel {
   lastMessageId: string | null;
 
   /** The last message sent in the channel, or `null` if no message exists. */
-  lastMessage: Message | null;
+  lastMessage: MessageStruct | null;
 
   /**
    * Sends a message to the channel.
@@ -29,7 +29,7 @@ export interface TextBasedChannel {
    * await channel.send("Hello, world!");
    * ```
    */
-  send(options: MessageOptions | string): Promise<Message>;
+  send(options: MessageOptions | string): Promise<MessageStruct>;
 
   /**
    * Deletes multiple messages from the channel.
@@ -43,6 +43,6 @@ export interface TextBasedChannel {
    * ```
    */
   bulkDelete(
-    messages: MessageResolvable[] | Map<string, Message> | number,
+    messages: MessageResolvable[] | Map<string, MessageStruct> | number,
   ): Promise<void>;
 }

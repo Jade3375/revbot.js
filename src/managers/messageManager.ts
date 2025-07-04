@@ -8,11 +8,11 @@ import { Readable } from "stream";
 import FormData from "form-data";
 import axios from "axios";
 import { BaseManager } from "./baseManager";
-import { Channel, Emoji, Message, MessageEmbed } from "../struct/index";
+import { Channel, Emoji, MessageStruct, MessageEmbed } from "../struct/index";
 import { UUID } from "../utils/index";
 import { CDNAttachmentResponse } from "../utils/types";
 
-export type MessageResolvable = Message | APIMessage | string;
+export type MessageResolvable = MessageStruct | APIMessage | string;
 
 export interface MessageReply {
   id: string;
@@ -48,8 +48,8 @@ export interface MessageQueryOptions {
   nearby?: string;
 }
 
-export class MessageManager extends BaseManager<Message, APIMessage> {
-  holds = Message;
+export class MessageManager extends BaseManager<MessageStruct, APIMessage> {
+  holds = MessageStruct;
   constructor(protected readonly channel: Channel) {
     super(channel.client);
   }
@@ -63,7 +63,7 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
    * - embeds: An array of MessageEmbed objects
    * @returns Promise that resolves to the sent message
    */
-  async send(content: MessageOptions | string): Promise<Message> {
+  async send(content: MessageOptions | string): Promise<MessageStruct> {
     if (typeof content === "string") content = { content };
     let attachments: string[] = [];
     let embeds: SendableEmbed[] = [];
@@ -133,7 +133,7 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
    * @returns Promise that resolves when the messages are deleted
    */
   async bulkDelete(
-    messages: MessageResolvable[] | number | Map<string, Message>,
+    messages: MessageResolvable[] | number | Map<string, MessageStruct>,
   ): Promise<void> {
     let ids: string[] = [];
 
@@ -202,7 +202,7 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
    */
   async search(
     query: MessageSearchOptions | string,
-  ): Promise<Map<string, Message>> {
+  ): Promise<Map<string, MessageStruct>> {
     if (typeof query === "string") query = { query };
 
     const response = (await this.client.api.post(
@@ -216,7 +216,7 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
       const msg = this._add(cur);
       coll.set(msg.id, msg);
       return coll;
-    }, new Map<string, Message>());
+    }, new Map<string, MessageStruct>());
   }
 
   /**
@@ -227,12 +227,12 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
    * - after: The message ID to stop fetching at (exclusive)
    * @returns Promise that resolves to a Message object or a Map of message IDs to Message objects
    */
-  fetch(message: MessageResolvable): Promise<Message>;
-  fetch(query?: MessageQueryOptions): Promise<Map<string, Message>>;
-  fetch(limit: number): Promise<Map<string, Message>>;
+  fetch(message: MessageResolvable): Promise<MessageStruct>;
+  fetch(query?: MessageQueryOptions): Promise<Map<string, MessageStruct>>;
+  fetch(limit: number): Promise<Map<string, MessageStruct>>;
   async fetch(
     query?: MessageResolvable | MessageQueryOptions | number,
-  ): Promise<Map<string, Message> | Message> {
+  ): Promise<Map<string, MessageStruct> | MessageStruct> {
     const id = this.resolveId(query as string);
 
     if (id) {
@@ -254,7 +254,7 @@ export class MessageManager extends BaseManager<Message, APIMessage> {
       const msg = this._add(cur);
       coll.set(msg.id, msg);
       return coll;
-    }, new Map<string, Message>());
+    }, new Map<string, MessageStruct>());
   }
 
   /**

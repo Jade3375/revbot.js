@@ -1,5 +1,5 @@
 import type { Channel as APIChannel } from "revolt-api";
-import { Attachment, Channel, Invite, Message, User } from "./index";
+import { Attachment, Channel, Invite, MessageStruct, User } from "./index";
 import type { TextBasedChannel } from "./interfaces/baseChannel";
 import type { client } from "../client/client";
 import {
@@ -109,7 +109,7 @@ export class GroupChannel extends Channel implements TextBasedChannel {
    *
    * @returns {Message | null} The last message, or `null` if no message exists.
    */
-  get lastMessage(): Message | null {
+  get lastMessage(): MessageStruct | null {
     if (!this.lastMessageId) return null;
     return this.messages.cache.get(this.lastMessageId) ?? null;
   }
@@ -135,7 +135,7 @@ export class GroupChannel extends Channel implements TextBasedChannel {
    * ```
    */
   bulkDelete(
-    messages: MessageResolvable[] | Map<string, Message> | number,
+    messages: MessageResolvable[] | Map<string, MessageStruct> | number,
   ): Promise<void> {
     return this.messages.bulkDelete(messages);
   }
@@ -218,7 +218,7 @@ export class GroupChannel extends Channel implements TextBasedChannel {
    * await groupChannel.send("Hello, group!");
    * ```
    */
-  send(options: MessageOptions | string): Promise<Message> {
+  send(options: MessageOptions | string): Promise<MessageStruct> {
     return this.messages.send(options);
   }
 

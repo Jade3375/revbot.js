@@ -1,6 +1,6 @@
 {
   "name": "revbot.js",
-  "version": "0.0.13",
+  "version": "0.1.0",
   "description": "A Revolt bot client used to interact with the revolt api for Node.js, written in TypeScript.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -46,7 +46,7 @@
   },
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
-    "build": "yarn clean && yarn tsup ",
+    "build": "yarn clean && yarn tsup ./src/index.ts --format cjs,esm --clean --dts --sourcemap",
     "start": "yarn build && yarn node --enable-source-maps dist/index.js",
     "testClient": "yarn test:build && yarn node --enable-source-maps dist/test.js",
     "clean": "rimraf dist",

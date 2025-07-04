@@ -8,7 +8,7 @@ import type {
 import { EventEmitter } from "node:events";
 import { DEFAULT_CLIENT_OPTIONS, Events } from "../utils/constants";
 import { RestClient } from "../rest/restClient";
-import { Message } from "../struct/index";
+import { MessageStruct } from "../struct/index";
 import { client } from "./client";
 import { CDNClient } from "../rest/CDNClient";
 
@@ -63,15 +63,15 @@ export interface ClientEvents {
   /** Emitted when a debug message is logged. */
   [Events.DEBUG]: [unknown];
   /** Emitted when a message is received. */
-  [Events.MESSAGE]: [Message];
+  [Events.MESSAGE]: [MessageStruct];
   /** Emitted when a message is deleted. */
-  [Events.MESSAGE_DELETE]: [Message];
+  [Events.MESSAGE_DELETE]: [MessageStruct];
   /** Emitted when a message is updated. */
-  [Events.MESSAGE_UPDATE]: [Message, Message];
+  [Events.MESSAGE_UPDATE]: [MessageStruct, MessageStruct];
   /** Emitted when a reaction is added to a message. */
-  [Events.MESSAGE_REACT]: [Message];
+  [Events.MESSAGE_REACT]: [MessageStruct];
   /** Emitted when a reaction is removed from a message. */
-  [Events.MESSAGE_REACT_REMOVE]: [Message];
+  [Events.MESSAGE_REACT_REMOVE]: [MessageStruct];
   /** Emitted when a message is bulk deleted. */
   [Events.MESSAGE_DELETE_BULK]: [string[]];
   /** Emitted when a channel is created. */

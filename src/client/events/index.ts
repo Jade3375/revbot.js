@@ -1,22 +1,48 @@
-export * from "./bulkMessageDelete";
-export * from "./channelCreate";
-export * from "./channelDelete";
-export * from "./channelGroupJoin";
-export * from "./channelGroupLeave";
-export * from "./channelStarttyping";
-export * from "./channelStopTyping";
-export * from "./channelUpdate";
-export * from "./message";
-export * from "./messageDelete";
-export * from "./messageUpdate";
-export * from "./serverCreate";
-export * from "./serverDelete";
-export * from "./serverMemberJoin";
-export * from "./serverMemberLeave";
-export * from "./serverMemberUpdate";
-export * from "./serverRoleDelete";
-export * from "./serverRoleUpdate";
-export * from "./serverupdate";
-export * from "./userUpdate";
-export * from "./messageReact";
-export * from "./messageUnreact";
+// Static event map for robust registration
+import { BulkMessageDelete } from "./bulkMessageDelete";
+import { ChannelCreate } from "./channelCreate";
+import { ChannelDelete } from "./channelDelete";
+import { ChannelGroupJoin } from "./channelGroupJoin";
+import { ChannelGroupLeave } from "./channelGroupLeave";
+import { ChannelStartTyping } from "./channelStarttyping";
+import { ChannelStopTyping } from "./channelStopTyping";
+import { ChannelUpdate } from "./channelUpdate";
+import { Message as MessageReceved } from "./message";
+import { MessageDelete } from "./messageDelete";
+import { MessageUpdate } from "./messageUpdate";
+import { ServerCreate } from "./serverCreate";
+import { ServerDelete } from "./serverDelete";
+import { ServerMemberJoin } from "./serverMemberJoin";
+import { ServerMemberLeave } from "./serverMemberLeave";
+import { ServerMemberUpdate } from "./serverMemberUpdate";
+import { ServerRoleDelete } from "./serverRoleDelete";
+import { ServerRoleUpdate } from "./serverRoleUpdate";
+import { ServerUpdate } from "./serverupdate";
+import { UserUpdate } from "./userUpdate";
+import { MessageReact } from "./messageReact";
+import { MessageUnreact } from "./messageUnreact";
+
+export const EventMap = {
+  bulkMessageDelete: BulkMessageDelete,
+  channelCreate: ChannelCreate,
+  channelDelete: ChannelDelete,
+  channelGroupJoin: ChannelGroupJoin,
+  channelGroupLeave: ChannelGroupLeave,
+  channelStartTyping: ChannelStartTyping,
+  channelStopTyping: ChannelStopTyping,
+  channelUpdate: ChannelUpdate,
+  message: MessageReceved,
+  messageDelete: MessageDelete,
+  messageUpdate: MessageUpdate,
+  serverCreate: ServerCreate,
+  serverDelete: ServerDelete,
+  serverMemberJoin: ServerMemberJoin,
+  serverMemberLeave: ServerMemberLeave,
+  serverMemberUpdate: ServerMemberUpdate,
+  serverRoleDelete: ServerRoleDelete,
+  serverRoleUpdate: ServerRoleUpdate,
+  serverUpdate: ServerUpdate,
+  userUpdate: UserUpdate,
+  messageReact: MessageReact,
+  messageUnreact: MessageUnreact,
+};

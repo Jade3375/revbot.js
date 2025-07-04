@@ -1,5 +1,5 @@
 import type { Channel as APIChannel } from "revolt-api";
-import { Channel, Message } from "./index";
+import { Channel, MessageStruct } from "./index";
 import { TextBasedChannel } from "./interfaces/baseChannel";
 import {
   client,
@@ -64,7 +64,7 @@ export class DMChannel extends Channel implements TextBasedChannel {
    *
    * @returns {Message | null} The last message, or `null` if no message exists.
    */
-  get lastMessage(): Message | null {
+  get lastMessage(): MessageStruct | null {
     if (!this.lastMessageId) return null;
     return this.messages.cache.get(this.lastMessageId) ?? null;
   }
@@ -81,7 +81,7 @@ export class DMChannel extends Channel implements TextBasedChannel {
    * ```
    */
   bulkDelete(
-    messages: MessageResolvable[] | Map<string, Message> | number,
+    messages: MessageResolvable[] | Map<string, MessageStruct> | number,
   ): Promise<void> {
     return this.messages.bulkDelete(messages);
   }
@@ -97,7 +97,7 @@ export class DMChannel extends Channel implements TextBasedChannel {
    * await dmChannel.send("Hello, world!");
    * ```
    */
-  send(options: MessageOptions | string): Promise<Message> {
+  send(options: MessageOptions | string): Promise<MessageStruct> {
     return this.messages.send(options);
   }
 }

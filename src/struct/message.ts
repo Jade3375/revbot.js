@@ -19,7 +19,7 @@ import { UUID } from "../utils/index";
  *
  * @extends Base
  */
-export class Message extends Base {
+export class MessageStruct extends Base {
   /** The type of the message (e.g., TEXT, SYSTEM). */
   type: Uppercase<SystemMessage["type"]> = "TEXT";
 
@@ -226,7 +226,7 @@ export class Message extends Base {
   reply(
     content: MessageOptions | string,
     mention: boolean = true,
-  ): Promise<Message> {
+  ): Promise<MessageStruct> {
     return this.channel.messages.send({
       ...(typeof content === "object" ? content : { content }),
       replies: [{ id: this.id, mention }],
@@ -248,7 +248,7 @@ export class Message extends Base {
    *
    * @returns {Promise<Message>} A promise that resolves with the updated message instance.
    */
-  fetch(): Promise<Message> {
+  fetch(): Promise<MessageStruct> {
     return this.channel.messages.fetch(this.id);
   }
 

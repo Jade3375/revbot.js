@@ -1,4 +1,4 @@
-import { Message, ServerMember, User } from "./index";
+import { MessageStruct, ServerMember, User } from "./index";
 import { client } from "../client/client";
 import { UserResolvable } from "../managers/index";
 
@@ -16,7 +16,7 @@ export class Mentions {
    * @param {string[]} _users - An array of user IDs mentioned in the message.
    */
   constructor(
-    public readonly message: Message,
+    public readonly message: MessageStruct,
     protected _users: string[],
   ) {
     this.client = message.client;
