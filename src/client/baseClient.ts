@@ -123,6 +123,12 @@ export interface clientOptions {
   /** Whether to fetch all members of a server. */
   fetchMembers?: boolean;
 
+  /** events for the client to ignore.*/
+  ignoreEvents?: string[];
+
+  /** Whether to ignore bot messages. */
+  ignoreBots?: boolean;
+
   /** wether to use X-Session-Token or X-Bot-Token*/
   isBot?: boolean;
 

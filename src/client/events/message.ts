@@ -17,8 +17,10 @@ export class Message extends Event {
     const channel = this.client.channels.cache.get(data.channel);
 
     if (channel?.isText()) {
+      if (data.user?.bot && this.client.options.ignoreBots) {
+        return {};
+      }
       const message = channel.messages._add(data);
-
       if (data.author !== SYSTEM_USER_ID && !data.webhook) {
         await this.client.users.fetch(data.author, { force: false });
       }
