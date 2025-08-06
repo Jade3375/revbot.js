@@ -92,6 +92,10 @@ export class User extends Base {
     return UUID.timestampOf(this.id);
   }
 
+  get isOwner(): boolean {
+    return this.id === this.client.user?.owner;
+  }
+
   /**
    * Gets the creation timestamp of the user in milliseconds.
    *

@@ -1,4 +1,6 @@
 import { NotesChannel, Status, User } from "./index";
+import type { User as APIUser } from "revolt-api";
+import { client } from "../client/client";
 
 /**
  * Represents the client user, which is the authenticated user or bot.
@@ -9,6 +11,13 @@ export class ClientUser extends User {
   /** The notes channel associated with the client user, if any. */
   notes: NotesChannel | null = null;
 
+  owner: string | null = null;
+
+  constructor(client: client, data: APIUser) {
+    super(client, data);
+    this._patch(data);
+    this.owner = data.bot?.owner || null;
+  }
   /**
    * Updates the username of the client user.
    *
