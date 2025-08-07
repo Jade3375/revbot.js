@@ -92,6 +92,9 @@ export class User extends Base {
     return UUID.timestampOf(this.id);
   }
 
+  /**
+   * checks if the user is the owner of the bot.
+   */
   get isOwner(): boolean {
     return this.id === this.client.user?.owner;
   }

@@ -1,6 +1,7 @@
 import { NotesChannel, Status, User } from "./index";
 import type { User as APIUser } from "revolt-api";
 import { client } from "../client/client";
+import { stat } from "node:fs";
 
 /**
  * Represents the client user, which is the authenticated user or bot.
@@ -50,12 +51,27 @@ export class ClientUser extends User {
    *
    * @example
    * ```typescript
-   * await clientUser.setStatus("Available", "online");
+   * await clientUser.setStatus("Available", "Online");
    * ```
    */
-  async setStatus(text: string | null, presence?: Status): Promise<void> {
-    await this.client.api.patch("/users/@me", {
-      body: { status: { text, presence } },
+  async setStatus(text?: string | null): Promise<void>;
+  async setStatus(presence?: Status): Promise<void>;
+  async setStatus(
+    text?: string | null,
+    presence?: keyof typeof Status,
+  ): Promise<void>;
+  async setStatus(text?: unknown, presence?: unknown): Promise<void> {
+    // If 'text' is a valid key of Status, treat it as presence
+    if (typeof text === "string" && text in Status) {
+      presence = text as keyof typeof Status;
+      text = undefined;
+    }
+    const status = {
+      text: text ?? this.client.user?.presence.text,
+      presence: presence ?? this.client.user?.presence.status,
+    };
+    await this.client.api.patch(`/users/${this.client.user?.id}`, {
+      body: { status: status },
     });
   }
 }

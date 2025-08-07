@@ -4,10 +4,11 @@ import { Base } from "./base";
  * Enum representing the possible presence statuses of a user.
  */
 export enum Status {
-  Online = "ONLINE",
-  Idle = "IDLE",
-  Busy = "DND",
-  Invisible = "OFFLINE",
+  Online = "Online",
+  Idle = "Idle",
+  Focus = "Focus",
+  Busy = "Busy",
+  Invisible = "Invisible",
 }
 
 /**
