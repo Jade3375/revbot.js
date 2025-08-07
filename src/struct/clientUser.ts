@@ -62,7 +62,7 @@ export class ClientUser extends User {
   ): Promise<void>;
   async setStatus(text?: unknown, presence?: unknown): Promise<void> {
     // If 'text' is a valid key of Status, treat it as presence
-    if (typeof text === "string" && text in Status) {
+    if (typeof text === "string" && text in Status && !presence) {
       presence = text as keyof typeof Status;
       text = undefined;
     }
