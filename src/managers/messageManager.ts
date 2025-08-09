@@ -52,7 +52,7 @@ export class MessageManager extends BaseManager<MessageStruct, APIMessage> {
   holds = MessageStruct;
   constructor(
     protected readonly channel: Channel,
-    maxSize = 2,
+    maxSize = 1000,
   ) {
     super(channel.client, maxSize);
   }

@@ -2,7 +2,7 @@ import type { client } from "../client/client";
 
 export abstract class BaseManager<Holds extends { id: string }, R = unknown> {
   /** Shared default max size for all managers (can be changed globally). */
-  static defaultMaxSize = 1000;
+  static defaultMaxSize = -1;
 
   /** Insertion ordered cache of items this manager holds. */
   readonly cache = new Map<string, Holds>();
@@ -38,7 +38,7 @@ export abstract class BaseManager<Holds extends { id: string }, R = unknown> {
 
   /** Adjust the maximum size for this manager at runtime. */
   setMaxSize(size: number): void {
-    if (!Number.isFinite(size) || size < 0)
+    if (!Number.isFinite(size) || size < -1)
       throw new RangeError("maxSize must be a non-negative finite number");
     this.maxSize = size;
     this.enforceMaxSize();
@@ -46,7 +46,7 @@ export abstract class BaseManager<Holds extends { id: string }, R = unknown> {
 
   /** Force eviction until cache size is within the limit. */
   protected enforceMaxSize(): void {
-    if (this.cache.size === -1) return;
+    if (this.maxSize === -1) return;
     if (this.maxSize === 0) {
       // Special case: caching disabled.
       this.cache.clear();
