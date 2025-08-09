@@ -140,6 +140,11 @@ export interface clientOptions {
     retries: number;
   };
 
+  MessageCache?: {
+    /** The maximum size of the cache. */
+    maxSize?: number;
+  };
+
   /** Configuration for WebSocket connections. */
   ws?: {
     /** The interval for sending heartbeats in milliseconds. */

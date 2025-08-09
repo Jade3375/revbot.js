@@ -90,6 +90,9 @@ export const DEFAULT_CLIENT_OPTIONS: clientOptions = {
     timeout: 15000,
     retries: 3,
   },
+  MessageCache: {
+    maxSize: 1000,
+  },
   ws: {
     heartbeatInterval: 30000,
     reconnect: true,

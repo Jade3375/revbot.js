@@ -50,8 +50,11 @@ export interface MessageQueryOptions {
 
 export class MessageManager extends BaseManager<MessageStruct, APIMessage> {
   holds = MessageStruct;
-  constructor(protected readonly channel: Channel) {
-    super(channel.client);
+  constructor(
+    protected readonly channel: Channel,
+    maxSize = 2,
+  ) {
+    super(channel.client, maxSize);
   }
 
   /**
