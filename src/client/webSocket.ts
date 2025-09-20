@@ -274,7 +274,11 @@ export class WebSocketClient {
       if (typeof this.client.token !== "string") {
         throw new Error("INVALID_TOKEN");
       }
-      const ws = (this.socket = this.socket ?? new WebSocket(`${wsUrl}`));
+      const ws = (this.socket =
+        this.socket ??
+        new WebSocket(
+          `${this.client.options.ws?.instanceURL ? this.client.options.ws?.instanceURL : wsUrl}`,
+        ));
 
       ws.onopen = this.onOpen.bind(this);
       ws.onmessage = this.onMessage.bind(this);

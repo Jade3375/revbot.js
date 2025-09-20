@@ -135,9 +135,13 @@ export interface clientOptions {
   /** Configuration for REST API requests. */
   rest?: {
     /** The timeout for REST requests in milliseconds. */
-    timeout: number;
+    timeout?: number;
     /** The number of retries for failed REST requests. */
-    retries: number;
+    retries?: number;
+    /** URL for revolt API instance without trailing slash */
+    instanceURL?: string;
+    /** URL for revolt CDN instance without trailing slash */
+    instanceCDNURL?: string;
   };
 
   MessageCache?: {
@@ -151,6 +155,8 @@ export interface clientOptions {
     heartbeatInterval?: number;
     /** Whether to automatically reconnect on disconnection. */
     reconnect?: boolean;
+    /** URL for revolt WebSocket instance without trailing slash */
+    instanceURL?: string;
   };
 }
 
@@ -181,6 +187,26 @@ export abstract class BaseClient extends EventEmitter {
    * @param {clientOptions} [options={}] - The options for configuring the client.
    */
   constructor(options: clientOptions = {}) {
+    if (
+      options.rest?.instanceCDNURL ||
+      options.rest?.instanceURL ||
+      options.ws?.instanceURL
+    ) {
+      if (
+        !options.rest?.instanceCDNURL ||
+        !options.rest?.instanceURL ||
+        !options.ws?.instanceURL
+      ) {
+        console.error(
+          'All instance URLs must be provided (CDN, REST, WS) see docs at "https://jade3375.github.io/revbot.js/interfaces/clientOptions.html"',
+        );
+        process.exit(0);
+      } else {
+        console.warn(
+          "You are connecting to a custom instance of Revolt. compatibility with RevBot.js is not guaranteed.",
+        );
+      }
+    }
     super();
     this.options = {
       ...DEFAULT_CLIENT_OPTIONS,

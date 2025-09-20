@@ -30,7 +30,7 @@ export class RestClient {
       const config: AxiosRequestConfig & { url: string } = {
         ...{
           method,
-          url: `${apiUrl}${url}`,
+          url: `${this.client.options.rest?.instanceURL ? this.client.options.rest?.instanceURL : apiUrl}${url}`,
           params: query,
           data: body?.body,
           headers: {

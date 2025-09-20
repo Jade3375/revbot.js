@@ -30,7 +30,7 @@ export class CDNClient {
       const config: AxiosRequestConfig & { url: string } = {
         ...{
           method,
-          url: `${cdnUrl}${url}`,
+          url: `${this.client.options.rest?.instanceCDNURL ? this.client.options.rest?.instanceCDNURL : cdnUrl}${url}`,
           params: query,
           data,
           maxBodyLength: Infinity,
@@ -41,7 +41,7 @@ export class CDNClient {
             ...data.getHeaders(),
           },
         },
-        url: `${cdnUrl}${url}`,
+        url: `${this.client.options.rest?.instanceCDNURL ? this.client.options.rest?.instanceCDNURL : cdnUrl}${url}`,
       };
 
       // Use the rate limit queue for all requests
