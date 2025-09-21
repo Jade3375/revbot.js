@@ -1,4 +1,9 @@
-import type { File, Message as APIMessage, SystemMessage } from "revolt-api";
+import type {
+  File,
+  Message as APIMessage,
+  SystemMessage,
+  Masquerade,
+} from "revolt-api";
 import type { client } from "../client/client";
 import type { MessageEditOptions, MessageOptions } from "../managers/index";
 import {
@@ -46,6 +51,9 @@ export class MessageStruct extends Base {
 
   /** the reactions and count on a message */
   reactions: Map<string, string[]> = new Map();
+
+  /** Masquerade information for the message, Name and / or avatar override information */
+  masquerade?: Masquerade;
 
   /**
    * Creates a new Message instance.

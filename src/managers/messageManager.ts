@@ -1,5 +1,6 @@
 import type {
   Message as APIMessage,
+  Masquerade,
   MessageSort,
   SendableEmbed,
 } from "revolt-api";
@@ -24,6 +25,7 @@ export interface MessageOptions {
   replies?: MessageReply[];
   attachments?: Readable[] | string[] | File[];
   embeds?: MessageEmbed[];
+  masquerade?: Masquerade;
 }
 
 export interface MessageEditOptions {
