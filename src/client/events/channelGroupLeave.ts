@@ -2,7 +2,7 @@ import { Event, Events } from "./event";
 
 /**
  * Represents the event handler for a user leaving a group channel.
- *
+ * @private
  * @extends Event
  */
 export class ChannelGroupLeave extends Event {

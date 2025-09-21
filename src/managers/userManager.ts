@@ -5,6 +5,7 @@ import { MessageStruct, User } from "../struct/index";
 export type UserResolvable = User | APIUser | MessageStruct | string;
 
 export class UserManager extends BaseManager<User, APIUser> {
+  /** @private */
   holds = User;
 
   /**

@@ -2,7 +2,7 @@ import { Event, Events } from "./event";
 
 /**
  * Represents the event handler for message deletions.
- *
+ * @private
  * @extends Event
  */
 export class MessageDelete extends Event {

@@ -1,7 +1,7 @@
 import { client } from "../client/client";
 import { BitField } from "../utils/bitField";
 
-type PartialObject = Partial<
+export type PartialObject = Partial<
   { _id: string } | { id: string } | { _id: { user: string } }
 >;
 

@@ -19,7 +19,7 @@ export interface MessageReactData {
 
 /**
  * Represents the event handler for message reactions.
- *
+ * @private
  * @extends Event
  */
 export class MessageReact extends Event {

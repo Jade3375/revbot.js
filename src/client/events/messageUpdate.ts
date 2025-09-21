@@ -2,7 +2,7 @@ import { Event, API, Events } from "./event";
 
 /**
  * Represents the event handler for message updates.
- *
+ * @private
  * @extends Event
  */
 export class MessageUpdate extends Event {

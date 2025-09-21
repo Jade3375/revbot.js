@@ -51,6 +51,7 @@ export interface MessageQueryOptions {
 }
 
 export class MessageManager extends BaseManager<MessageStruct, APIMessage> {
+  /** @private */
   holds = MessageStruct;
   constructor(
     protected readonly channel: Channel,

@@ -42,10 +42,12 @@ export class ClientUser extends User {
     });
   }
 
+  async setStatus(text?: string | null): Promise<void>;
+  async setStatus(presence?: Status): Promise<void>;
   /**
    * Updates the status of the client user.
    *
-   * @param {string | null} text - The status text to set, or `null` to clear the status.
+   * @param {string | null} [text] - The status text to set, or `null` to clear the status.
    * @param {Status} [presence] - The presence status (e.g., online, idle, etc.).
    * @returns {Promise<void>} A promise that resolves when the status has been successfully updated.
    *
@@ -54,8 +56,6 @@ export class ClientUser extends User {
    * await clientUser.setStatus("Available", "Online");
    * ```
    */
-  async setStatus(text?: string | null): Promise<void>;
-  async setStatus(presence?: Status): Promise<void>;
   async setStatus(
     text?: string | null,
     presence?: keyof typeof Status,

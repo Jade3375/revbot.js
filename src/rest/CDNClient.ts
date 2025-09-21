@@ -96,7 +96,6 @@ export class CDNClient {
    * POST request.
    * @param url The URL for the request.
    * @param data The request body.
-   * @param query Query parameters (if applicable).
    * @returns The API response.
    */
   async post<T>(url: string, data: FormData): Promise<T> {

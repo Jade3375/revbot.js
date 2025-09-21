@@ -10,8 +10,10 @@ export interface EditServerOptions {
 }
 
 export class ServerManager extends BaseManager<Server, APIServer> {
+  /** @private */
   readonly holds = Server;
 
+  /** @private */
   _remove(id: string): void {
     const server = this.cache.get(id);
 

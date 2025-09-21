@@ -4,6 +4,7 @@ import { SYSTEM_USER_ID } from "../../utils/constants";
 /**
  * Represents the event handler for incoming messages.
  *
+ * @private
  * @extends Event
  */
 export class Message extends Event {
@@ -12,6 +13,7 @@ export class Message extends Event {
    *
    * @param {API.Message} data - The raw data for the message from the API.
    * @returns {Promise<{ message: unknown }>} A promise that resolves with the created message, or an empty object if the channel is not text-based.
+   * @private
    */
   async handle(data: API.Message): Promise<unknown> {
     const channel = this.client.channels.cache.get(data.channel);

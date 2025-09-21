@@ -4,6 +4,8 @@ import { client } from "../client";
 
 /**
  * Manages the registration and retrieval of events for the client.
+ * @private
+ * @extends Event
  */
 export class EventManager {
   /** A map of registered events, keyed by their names. */

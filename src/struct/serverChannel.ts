@@ -1,12 +1,8 @@
-import type { Channel as APIChannel, FieldsChannel } from "revolt-api";
+import type { FieldsChannel } from "revolt-api";
 import { Attachment, Category, Channel, Invite, Server } from "./index";
 import { client } from "../client/client";
-import { ChannelPermissions, FullPermissions } from "../utils/index";
-
-type APIServerChannel = Extract<
-  APIChannel,
-  { channel_type: "TextChannel" | "VoiceChannel" }
->;
+import { FullPermissions } from "../utils/index";
+import { APIServerChannel } from "../types";
 
 export interface Overwrite {
   allow: FullPermissions;

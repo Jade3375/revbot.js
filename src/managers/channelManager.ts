@@ -12,8 +12,10 @@ import {
 export type ChannelResolvable = Channel | APIChannel | string;
 
 export class ChannelManager extends BaseManager<Channel, APIChannel> {
+  /** @private */
   holds = null;
 
+  /** @private */
   _add(data: APIChannel): Channel {
     let channel: Channel;
 
