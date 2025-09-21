@@ -3,6 +3,7 @@ import type { client } from "../client";
 /**
  * Represents the base class for all event handlers.
  * All event handlers must extend this class and implement the `handle` method.
+ *  @private
  */
 export abstract class Event {
   /**

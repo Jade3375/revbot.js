@@ -2,7 +2,7 @@ import { Event, API, Events } from "./event";
 
 /**
  * Represents the event handler for server deletion.
- *
+ * @private
  * @extends Event
  */
 export class ServerDelete extends Event {

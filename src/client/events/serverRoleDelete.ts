@@ -2,7 +2,7 @@ import { Event, Events } from "./event";
 
 /**
  * Represents the event handler for server role deletions.
- *
+ * @private
  * @extends Event
  */
 export class ServerRoleDelete extends Event {

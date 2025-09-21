@@ -2,7 +2,7 @@ import { Event, Events } from "./event";
 
 /**
  * Represents the event handler for when a user stops typing in a channel.
- *
+ * @private
  * @extends Event
  */
 export class ChannelStopTyping extends Event {

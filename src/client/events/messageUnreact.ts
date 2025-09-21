@@ -3,7 +3,7 @@ import { MessageReactData } from "./messageReact";
 
 /**
  * Represents the event handler for message reaction removals.
- *
+ * @private
  * @extends Event
  */
 export class MessageUnreact extends Event {

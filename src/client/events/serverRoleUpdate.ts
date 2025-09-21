@@ -2,7 +2,7 @@ import { Event, API, Events } from "./event";
 
 /**
  * Represents the event handler for server role updates.
- *
+ * @private
  * @extends Event
  */
 export class ServerRoleUpdate extends Event {

@@ -7,11 +7,7 @@ import {
   VoiceChannel,
 } from "../struct/index";
 import { UUID } from "../utils/index";
-
-type APIServerChannel = Extract<
-  Channel,
-  { channel_type: "TextChannel" | "VoiceChannel" }
->;
+import { APIServerChannel } from "../types";
 
 export type ServerChannelResolvable = ServerChannel | APIServerChannel | string;
 
@@ -22,11 +18,13 @@ export interface CreateChannelOptions {
 }
 
 export class ServerChannelManager extends BaseManager<ServerChannel> {
+  /** @private */
   holds = ServerChannel;
   constructor(protected readonly server: Server) {
     super(server.client);
   }
 
+  /** @private */
   _add(data: APIServerChannel): ServerChannel {
     let channel: ServerChannel;
 
@@ -49,11 +47,12 @@ export class ServerChannelManager extends BaseManager<ServerChannel> {
   }
 
   /**
-   * creates a new channel in the server
-   * @param name The name of the channel to create
-   * @param type The type of the channel to create. Can be "Text" or "Voice". Defaults to "Text".
-   * @param description The description of the channel to create. Only used for voice channels.
-   * @returns A promise that resolves to the created channel
+   * Creates a new channel in the server.
+   * @param options - Options for creating the channel.
+   * @param options.name - The name of the channel to create.
+   * @param [options.type="Text"] - The type of the channel to create. Can be "Text" or "Voice". Defaults to "Text".
+   * @param [options.description] - The description of the channel to create. Only used for voice channels.
+   * @returns A promise that resolves to the created channel.
    */
   async create({
     name,

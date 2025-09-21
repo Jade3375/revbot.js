@@ -7,11 +7,13 @@ import { editableRole } from "../utils/types";
 export type RoleResolvable = Role | string;
 
 export class RoleManager extends BaseManager<Role, APIRole & { id: string }> {
+  /** @private */
   holds = Role;
   constructor(protected readonly server: Server) {
     super(server.client);
   }
 
+  /** @private */
   _add(data: APIRole & { id: string }): Role {
     const role = new Role(this.server, data);
     this.cache.set(role.id, role);

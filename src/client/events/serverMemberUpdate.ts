@@ -3,7 +3,7 @@ import { Event, API, Events } from "./event";
 
 /**
  * Represents the event handler for server member updates.
- *
+ * @private
  * @extends Event
  */
 export class ServerMemberUpdate extends Event {

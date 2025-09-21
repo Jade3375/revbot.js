@@ -2,7 +2,7 @@ import { Event, Events } from "./event";
 
 /**
  * Represents the event handler for a user joining a group channel.
- *
+ * @private
  * @extends Event
  */
 export class ChannelGroupJoin extends Event {

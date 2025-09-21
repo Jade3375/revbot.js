@@ -10,6 +10,7 @@ export abstract class BaseManager<Holds extends { id: string }, R = unknown> {
   /** Instance level max size (can be changed per manager instance). */
   protected maxSize: number;
 
+  /** @private */
   Holds: any;
 
   constructor(
@@ -22,6 +23,7 @@ export abstract class BaseManager<Holds extends { id: string }, R = unknown> {
   /**
    * Adds a raw object to the cache, constructing the holdable class.
    * Automatically evicts oldest entries if the max size is exceeded.
+   * @private
    */
   _add(raw: R): Holds {
     if (!this.holds) throw new Error("Holds is not defined");
@@ -31,7 +33,9 @@ export abstract class BaseManager<Holds extends { id: string }, R = unknown> {
     return obj;
   }
 
-  /** Remove an entry by id. */
+  /** Remove an entry by id.
+   * @private
+   */
   _remove(id: string): void {
     this.cache.delete(id);
   }

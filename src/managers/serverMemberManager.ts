@@ -11,6 +11,7 @@ export interface EditServerMemberOptions {
 }
 
 export class ServerMemberManager extends BaseManager<ServerMember, Member> {
+  /** @private */
   holds = ServerMember;
   constructor(protected readonly server: Server) {
     super(server.client);

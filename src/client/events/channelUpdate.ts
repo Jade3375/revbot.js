@@ -2,7 +2,7 @@ import { Event, API, Events } from "./event";
 
 /**
  * Represents the event handler for channel updates.
- *
+ * @private
  * @extends Event
  */
 export class ChannelUpdate extends Event {
