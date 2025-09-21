@@ -587,7 +587,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.9.0":
+"axios@npm:^1.12.2":
   version: 1.12.2
   resolution: "axios@npm:1.12.2"
   dependencies:
@@ -1686,7 +1686,7 @@ __metadata:
     "@mxssfd/typedoc-theme": "npm:^1.1.7"
     "@types/node": "npm:^22.15.2"
     "@types/ws": "npm:^8.18.1"
-    axios: "npm:^1.9.0"
+    axios: "npm:^1.12.2"
     eslint-config-prettier: "npm:^10.1.2"
     form-data: "npm:^4.0.2"
     prettier: "npm:^3.5.3"
