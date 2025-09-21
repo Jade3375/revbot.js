@@ -38,7 +38,7 @@ export class RestClient {
             "User-Agent": `RevBot.js/${version}`,
           },
         },
-        url: `${apiUrl}${url}`,
+        url: `${this.client.options.rest?.instanceURL ? this.client.options.rest?.instanceURL : apiUrl}${url}`,
       };
 
       // Use the rate limit queue for all requests
