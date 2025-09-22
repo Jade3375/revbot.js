@@ -23,8 +23,30 @@ Below is an example of how to set up a basic bot using `revbot.js`:
 
 ### Example Code
 
+### typescript
+
 ```ts
-import { client } from "revbot.js";
+import { client, MessageStruct } from "revbot.js";
+
+const bot = new client({});
+
+bot.on("ready", () => {
+  console.log("Bot is ready!");
+});
+
+bot.on("message", (message: MessageStruct) => {
+  if (message.content === "ping") {
+    message.reply("pong");
+  }
+});
+
+bot.login("YOUR_BOT_TOKEN");
+```
+
+### javascript
+
+```js
+const { client } = require("revbot.js");
 
 const bot = new client({});
 
@@ -45,6 +67,7 @@ bot.login("YOUR_BOT_TOKEN");
 
 - Event-based architecture for handling messages, server updates, and more.
 - Easy-to-use managers for channels, servers, users, and roles.
+- Experimental support for 3rd party instances using backend version 0.7 +
 
 ## Development
 
