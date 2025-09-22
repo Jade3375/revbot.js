@@ -3,6 +3,7 @@ import { UUID } from "./UUID";
 
 /**
  * Enum representing the client events that can be emitted.
+ * @private
  */
 export enum Events {
   CHANNEL_CREATE = "channelCreate",
@@ -36,6 +37,7 @@ export enum Events {
 
 /**
  * Enum representing the WebSocket events used for communication.
+ * @private
  */
 export enum WSEvents {
   AUTHENTICATE = "Authenticate",
