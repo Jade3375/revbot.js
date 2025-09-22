@@ -1,5 +1,8 @@
 const DEFAULT_BIT = 0;
 
+/** A type that can be a BitField, number, string, or an array of these types.
+ * @private
+ */
 export type BitFieldResolvable =
   | BitField
   | number
