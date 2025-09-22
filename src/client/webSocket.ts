@@ -209,17 +209,6 @@ export class WebSocketClient {
           }
         }
 
-        for (const server of packet.servers) {
-          const s = this.client.servers._add(server);
-          if (this.client.options.fetchMembers) {
-            promises.push(s.members.fetch());
-          }
-        }
-
-        for (const channel of packet.channels) {
-          this.client.channels._add(channel);
-        }
-
         for (const member of packet.members) {
           this.client.servers.cache
             .get(member._id.server)
@@ -230,6 +219,17 @@ export class WebSocketClient {
           this.client.servers.cache
             .get(emoji.parent.id)
             ?.emojis.set(emoji._id, { ...emoji, _id: emoji._id });
+        }
+
+        for (const channel of packet.channels) {
+          this.client.channels._add(channel);
+        }
+
+        for (const server of packet.servers) {
+          const s = this.client.servers._add(server);
+          if (this.client.options.fetchMembers) {
+            promises.push(s.members.fetch());
+          }
         }
 
         this.setHeartbeatTimer(

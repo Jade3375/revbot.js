@@ -1,8 +1,16 @@
 import type { FieldsChannel } from "revolt-api";
-import { Attachment, Category, Channel, Invite, Server } from "./index";
+import {
+  Attachment,
+  Category,
+  Channel,
+  Invite,
+  MessageStruct,
+  Server,
+} from "./index";
 import { client } from "../client/client";
 import { FullPermissions } from "../utils/index";
 import { APIServerChannel } from "../types";
+import { MessageManager, MessageOptions } from "../managers";
 
 export interface Overwrite {
   allow: FullPermissions;
@@ -26,6 +34,9 @@ export class ServerChannel extends Channel {
 
   /** The icon of the channel, or `null` if none is set. */
   icon: Attachment | null = null;
+
+  /** Manages the messages in this Server channel. */
+  messages = new MessageManager(this);
 
   /** The permission overwrites for the channel. */
   overwrites = new Map<string, Overwrite>();
@@ -123,6 +134,21 @@ export class ServerChannel extends Channel {
    */
   get server(): Server {
     return this.client.servers.cache.get(this.serverId)!;
+  }
+
+  /**
+   * Sends a message to this Server channel.
+   *
+   * @param {MessageOptions | string} options - The message content or options for the message.
+   * @returns {Promise<Message>} A promise that resolves with the sent message.
+   *
+   * @example
+   * ```typescript
+   * await serverChannel.send("Hello, world!");
+   * ```
+   */
+  send(options: MessageOptions | string): Promise<MessageStruct> {
+    return this.messages.send(options);
   }
 
   /**
