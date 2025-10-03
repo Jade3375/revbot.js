@@ -156,7 +156,7 @@ export class User extends Base {
     return `${this.client.options.rest?.instanceCDNURL}/avatars/${this.avatar?.id}`;
   }
 
-  async displayAvatarURL(): Promise<string> {
+   async displayAvatarURL(): Promise<string> {
     const defaultAvatar = `${this.client.options.rest?.instanceCDNURL}/users/${this.id}/default_avatar`;
     return this.avatarURL() ?? defaultAvatar;
   }
