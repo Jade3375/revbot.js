@@ -1,6 +1,6 @@
 import { ClientUser } from "../struct/clientUser";
 import { Emoji } from "../struct/emoji";
-import { Events, WSEvents, wsUrl } from "../utils/constants";
+import { Events, WSEvents } from "../utils/constants";
 import { client } from "./client";
 
 declare function setInterval(
@@ -262,7 +262,7 @@ export class WebSocketClient {
    * @returns {Promise<this>} A promise that resolves when the connection is established.
    */
   connect(): Promise<this> {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
       if (this.socket?.readyState === WebSocket.OPEN && this.ready) {
         return resolve(this);
       }
@@ -274,11 +274,13 @@ export class WebSocketClient {
       if (typeof this.client.token !== "string") {
         throw new Error("INVALID_TOKEN");
       }
+
+      await this.client.init();
+
+      if (!this.client.options.ws?.instanceURL)
+        return Promise.reject(new Error("WebSocket instance URL not set."));
       const ws = (this.socket =
-        this.socket ??
-        new WebSocket(
-          `${this.client.options.ws?.instanceURL ? this.client.options.ws?.instanceURL : wsUrl}`,
-        ));
+        this.socket ?? new WebSocket(this.client.options.ws?.instanceURL));
 
       ws.onopen = this.onOpen.bind(this);
       ws.onmessage = this.onMessage.bind(this);

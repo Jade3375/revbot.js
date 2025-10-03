@@ -187,18 +187,10 @@ export abstract class BaseClient extends EventEmitter {
    * @param {clientOptions} [options={}] - The options for configuring the client.
    */
   constructor(options: clientOptions = {}) {
-    if (
-      options.rest?.instanceCDNURL ||
-      options.rest?.instanceURL ||
-      options.ws?.instanceURL
-    ) {
-      if (
-        !options.rest?.instanceCDNURL ||
-        !options.rest?.instanceURL ||
-        !options.ws?.instanceURL
-      ) {
+    if (options.rest?.instanceURL) {
+      if (!options.rest?.instanceURL) {
         console.error(
-          'All instance URLs must be provided (CDN, REST, WS) see docs at "https://jade3375.github.io/revbot.js/interfaces/clientOptions.html"',
+          'instance URLs must be provided (REST) see docs at "https://jade3375.github.io/revbot.js/interfaces/clientOptions.html"',
         );
         process.exit(0);
       } else {
