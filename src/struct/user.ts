@@ -5,7 +5,7 @@ import type {
   Channel as APIChannel,
 } from "revolt-api";
 import { client } from "../client/client";
-import { Badges, cdnUrl, apiUrl, UUID } from "../utils/index";
+import { Badges, UUID } from "../utils/index";
 
 /**
  * Represents a user in the client.
@@ -153,11 +153,11 @@ export class User extends Base {
 
   avatarURL(): string | undefined {
     if (!this.avatar?.id) return undefined;
-    return `${this.client.options.rest?.instanceCDNURL ? this.client.options.rest?.instanceCDNURL : cdnUrl}/avatars/${this.avatar?.id}`;
+    return `${this.client.options.rest?.instanceCDNURL}/avatars/${this.avatar?.id}`;
   }
 
-  async displayAvatarURL(): Promise<string> {
-    const defaultAvatar = `${this.client.options.rest?.instanceURL ? this.client.options.rest?.instanceURL : apiUrl}/users/${this.id}/default_avatar`;
+   async displayAvatarURL(): Promise<string> {
+    const defaultAvatar = `${this.client.options.rest?.instanceCDNURL}/users/${this.id}/default_avatar`;
     return this.avatarURL() ?? defaultAvatar;
   }
 

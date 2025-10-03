@@ -33,6 +33,14 @@ export class client extends BaseClient {
   readyAt: Date | null = null;
 
   /**
+   * Initializes the client.
+   * @private
+   */
+  async init(): Promise<void> {
+    await this.api.getConfig();
+  }
+
+  /**
    * Gets the timestamp when the client became ready.
    *
    * @returns {number | null} The ready timestamp in milliseconds, or `null` if not ready.

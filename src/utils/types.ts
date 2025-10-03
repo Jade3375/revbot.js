@@ -55,3 +55,66 @@ export type editableRole = {
    */
   remove?: Array<keyof Role & { [key: string]: unknown }>;
 };
+
+/**
+ * @private
+ */
+export interface ApiDiscoveryResponse {
+  revolt: string;
+  features: Features;
+  ws: string; // WebSocket URL
+  app: string; // App URL
+  vapid: string; // VAPID public key
+  build: BuildInfo;
+}
+/**
+ * @private
+ */
+export interface Features {
+  captcha: CaptchaFeature;
+  email: boolean;
+  invite_only: boolean;
+  autumn: ServiceWithUrl; // CDN
+  january: ServiceWithUrl; // Proxy
+  livekit: LivekitFeature;
+}
+/**
+ * @private
+ */
+export interface CaptchaFeature {
+  enabled: boolean;
+  key: string;
+}
+/**
+ * @private
+ */
+export interface ServiceWithUrl {
+  enabled: boolean;
+  url: string;
+}
+/**
+ * @private
+ */
+export interface LivekitFeature {
+  enabled: boolean;
+  nodes: LivekitNode[];
+}
+/**
+ * @private
+ */
+export interface LivekitNode {
+  name: string;
+  lat: number;
+  lon: number;
+  public_url: string;
+}
+/**
+ * @private
+ */
+export interface BuildInfo {
+  commit_sha: string;
+  commit_timestamp: string;
+  semver: string;
+  origin_url: string;
+  timestamp: string;
+}

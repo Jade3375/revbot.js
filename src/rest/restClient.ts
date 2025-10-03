@@ -3,6 +3,7 @@ import { BaseClient } from "../client/baseClient";
 import { apiUrl, DEFAULT_CLIENT_OPTIONS } from "../utils";
 import { version } from "../../package.json";
 import { RateLimitQueue } from "./restUtils/rateLimitQueue";
+import { ApiDiscoveryResponse } from "../utils/types";
 
 export class RestClient {
   private rateLimitQueue = new RateLimitQueue();
@@ -60,6 +61,27 @@ export class RestClient {
       throw new Error(
         `API call failed: ${error instanceof Error ? error.message : error}`,
       );
+    }
+  }
+
+  async getConfig(): Promise<void> {
+    try {
+      const response: AxiosResponse<ApiDiscoveryResponse> = await axios.get(
+        `${this.client.options.rest?.instanceURL ? this.client.options.rest?.instanceURL : apiUrl}/`,
+      );
+      const config = response.data;
+
+      this.client.options.rest = {
+        ...this.client.options.rest,
+        instanceCDNURL: config.features.autumn.url,
+      };
+      this.client.options.ws = {
+        ...this.client.options.ws,
+        instanceURL: config.ws,
+      };
+    } catch (error) {
+      console.error("Failed to fetch configuration:", error);
+      process.exit(1);
     }
   }
 

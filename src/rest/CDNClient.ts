@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { BaseClient } from "../client/baseClient";
-import { cdnUrl, DEFAULT_CLIENT_OPTIONS } from "../utils";
+import { DEFAULT_CLIENT_OPTIONS } from "../utils";
 import { version } from "../../package.json";
 import FormData from "form-data";
 import { RateLimitQueue } from "./restUtils/rateLimitQueue";
@@ -30,7 +30,7 @@ export class CDNClient {
       const config: AxiosRequestConfig & { url: string } = {
         ...{
           method,
-          url: `${this.client.options.rest?.instanceCDNURL ? this.client.options.rest?.instanceCDNURL : cdnUrl}${url}`,
+          url: `${this.client.options.rest?.instanceCDNURL}${url}`,
           params: query,
           data,
           maxBodyLength: Infinity,
@@ -41,7 +41,7 @@ export class CDNClient {
             ...data.getHeaders(),
           },
         },
-        url: `${this.client.options.rest?.instanceCDNURL ? this.client.options.rest?.instanceCDNURL : cdnUrl}${url}`,
+        url: `${this.client.options.rest?.instanceCDNURL}${url}`,
       };
 
       // Use the rate limit queue for all requests
