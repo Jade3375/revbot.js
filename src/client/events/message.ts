@@ -16,6 +16,9 @@ export class Message extends Event {
    * @private
    */
   async handle(data: API.Message): Promise<unknown> {
+    if (data.system) {
+      return {};
+    }
     const channel = this.client.channels.cache.get(data.channel);
 
     if (channel?.isText()) {
