@@ -1,8 +1,8 @@
 import type { Member as APIMember, FieldsMember } from "revolt-api";
 import { Base } from "./base";
-import { Attachment, Server, User, Role } from "./index";
+import { Attachment, Server, User, Role, Presence } from "./index";
 import { client } from "../client/client";
-import { BitField, FullPermissions } from "../utils";
+import { FullPermissions, Badges } from "../utils";
 
 /**
  * Represents a member of a server.
@@ -246,6 +246,24 @@ export class ServerMember extends Base {
    */
   get user(): User {
     return this.client.users.cache.get(this.id)!;
+  }
+
+  /**
+   * Gets the username of the user.
+   *
+   * @returns {string} The username of the user.
+   */
+  get username(): string {
+    return this.user.username;
+  }
+
+  /**
+   * Gets whether the user is a bot.
+   *
+   * @returns {boolean} Whether the user is a bot.
+   */
+  get bot(): boolean {
+    return this.user.bot;
   }
 
   /**
