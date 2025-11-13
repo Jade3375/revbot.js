@@ -100,7 +100,7 @@ export class client extends BaseClient {
     this.token = null;
     this.user = null;
     this.readyAt = null;
-    await this.ws.destroy();
+    await this.ws.destroy(true);
   }
 
   /**

@@ -152,9 +152,16 @@ export class MessageStruct extends Base {
   /**
    * Retrieves the author of the message.
    *
-   * @returns {User | null} The user who authored the message, or `null` if not found.
+   * @returns {User | ServerMember | null} The user who authored the message, or `null` if not found.
    */
-  get author(): User | null {
+  get author(): User | ServerMember | null {
+    if (this.inServer()) {
+      return (
+        this.server?.members.cache.get(this.authorId) ??
+        this.client.users.cache.get(this.authorId) ??
+        null
+      );
+    }
     return this.client.users.cache.get(this.authorId) ?? null;
   }
 

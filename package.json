@@ -1,6 +1,6 @@
 {
   "name": "revbot.js",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "A Revolt bot client used to interact with the revolt api for Node.js, written in TypeScript.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

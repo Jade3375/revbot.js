@@ -2,6 +2,7 @@ import type { Member as APIMember, FieldsMember } from "revolt-api";
 import { Base } from "./base";
 import { Attachment, Server, User, Role } from "./index";
 import { client } from "../client/client";
+import { BitField, FullPermissions } from "../utils";
 
 /**
  * Represents a member of a server.
@@ -174,6 +175,64 @@ export class ServerMember extends Base {
    */
   leave(): Promise<void> {
     return this.client.servers.delete(this.serverId);
+  }
+
+  /**
+   * Gets the effective permissions for this server member based on their roles.
+   *
+   * The permissions are calculated by:
+   * 1. Starting with a base FullPermissions with no permissions
+   * 2. For each role the member has, applying the role's allow permissions
+   * 3. For each role the member has, removing the role's deny permissions
+   *
+   * @returns {FullPermissions} The effective permissions for this member
+   *
+   * @example
+   * ```typescript
+   * const permissions = member.getPermissions();
+   * console.log(permissions.has('MANAGE_MESSAGES')); // true or false
+   * ```
+   */
+  permissions(): FullPermissions {
+    // Start with no permissions
+    let permissions = new FullPermissions();
+
+    // Apply allow permissions from all roles
+    for (const role of this.roles) {
+      if (role.overwrite?.allow) {
+        permissions = permissions.add(role.overwrite.allow);
+      }
+    }
+
+    // Remove deny permissions from all roles
+    for (const role of this.roles) {
+      if (role.overwrite?.deny) {
+        permissions = permissions.remove(role.overwrite.deny);
+      }
+    }
+
+    return permissions;
+  }
+
+  /**
+   * Checks if this server member has a specific permission.
+   *
+   * @param {string | number | FullPermissions} permission - The permission to check for
+   * @returns {boolean} Whether the member has the permission
+   *
+   * @example
+   * ```typescript
+   * if (member.hasPermission('MANAGE_MESSAGES')) {
+   *   // Member can manage messages
+   * }
+   * ```
+   *
+   * note this works on the same basis as stoats permissions checking
+   */
+  hasPermission(permission: string | number | FullPermissions): boolean {
+    if (this.client.servers.cache.get(this.serverId)?.ownerId === this.id)
+      return true;
+    return this.permissions().has(permission);
   }
 
   //   async displayAvatarURL(options?: { size: number }): Promise<string> {

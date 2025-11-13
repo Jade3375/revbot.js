@@ -1,3 +1,4 @@
+import { time } from "node:console";
 import { ClientUser } from "../struct/clientUser";
 import { Emoji } from "../struct/emoji";
 import { Events, WSEvents } from "../utils/constants";
@@ -33,6 +34,9 @@ export class WebSocketClient {
 
   /** Whether the WebSocket client is ready. */
   ready = false;
+
+  /** The number of reconnection attempts made. */
+  retryCount: number = 0;
 
   /**
    * Creates a new WebSocketClient instance.
@@ -188,6 +192,8 @@ export class WebSocketClient {
         break;
       case WSEvents.AUTHENTICATED:
         this.connected = true;
+        this.retryCount = 0;
+        this.debug(`Successfully authenticated.`);
         break;
       case WSEvents.PONG:
         this.debug(`Received a heartbeat.`);
@@ -262,6 +268,15 @@ export class WebSocketClient {
    * @returns {Promise<this>} A promise that resolves when the connection is established.
    */
   connect(): Promise<this> {
+    this.retryCount = this.retryCount + 1;
+    if (this.retryCount > 10) {
+      this.debug("Max retry attempts reached");
+      return Promise.reject(
+        new Error(
+          "Max retry attempts reached on WS connection, try again later.",
+        ),
+      );
+    }
     return new Promise(async (resolve) => {
       if (this.socket?.readyState === WebSocket.OPEN && this.ready) {
         return resolve(this);
@@ -295,7 +310,7 @@ export class WebSocketClient {
    *
    * @returns {Promise<void>} A promise that resolves when the connection is destroyed.
    */
-  destroy(): Promise<void> {
+  destroy(isUserInitiated?: boolean): Promise<void> {
     return new Promise((resolve) => {
       this.setHeartbeatTimer(-1);
       this.connected = false;
@@ -304,12 +319,21 @@ export class WebSocketClient {
       if (this.socket?.readyState === WebSocket.OPEN) {
         this.socket.addEventListener("close", () => {
           this.socket = null;
+          if (!isUserInitiated) {
+            setTimeout(() => this.connect(), 1000);
+          }
           resolve();
         });
 
         this.socket.close();
+        if (!isUserInitiated) {
+          setTimeout(() => this.connect(), 1000);
+        }
       } else {
         this.socket = null;
+        if (!isUserInitiated) {
+          setTimeout(() => this.connect(), 1000);
+        }
         resolve();
       }
     });

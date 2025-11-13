@@ -1,6 +1,6 @@
 import type { User as APIUser } from "revolt-api";
 import { BaseManager } from "./baseManager";
-import { MessageStruct, User } from "../struct/index";
+import { MessageStruct, ServerMember, User } from "../struct/index";
 
 export type UserResolvable = User | APIUser | MessageStruct | string;
 
@@ -33,11 +33,12 @@ export class UserManager extends BaseManager<User, APIUser> {
    * @param resolvable The user to resolve
    * @returns The user or null if it cannot be resolved
    */
-  resolve(resolvable: MessageStruct | User): User;
+  resolve(resolvable: MessageStruct | User): User | null;
   resolve(resolvable: string | APIUser): User | null;
   resolve(resolvable: User | APIUser | string | MessageStruct): User | null {
-    if (resolvable instanceof MessageStruct) return resolvable.author;
-    return super.resolve(resolvable);
+    if (resolvable instanceof MessageStruct)
+      return resolvable.author as unknown as User;
+    return super.resolve(resolvable) as User | null;
   }
 
   /**
