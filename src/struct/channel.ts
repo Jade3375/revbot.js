@@ -146,6 +146,27 @@ export abstract class Channel extends Base {
   }
 
   /**
+   * Sets the slowmode duration for the channel.
+   *
+   * @param duration slowmode in seconds, max of 6 hours
+   * @returns A promise that resolves when the slowmode has been set.
+   *
+   * @throws {TypeError} If the channel ID is invalid.
+   */
+  async setSlowmode(duration: number): Promise<void> {
+	const id = this.id;
+	if (!id) {
+	  throw new TypeError("INVALID_ID");
+	}
+	const  sixhoursInSeconds = 6 * 60 * 60;
+	if (duration > sixhoursInSeconds) {
+	  throw new RangeError("SLOWMODE_DURATION_EXCEEDS_LIMIT");
+	}
+
+	await this.edit({ slowmode: duration });
+  }
+
+  /**
    * Sets role permissions for this channel.
    *
    * @param roleId - The ID of the role to set permissions for.

@@ -207,3 +207,9 @@ export interface editWebhookOptions {
   avatar?: Readable | string | File;
   remove?: [];
 }
+
+export interface slowModeInfo {
+  channel_id: string;
+  duration: number;
+  retry_after: number;
+}

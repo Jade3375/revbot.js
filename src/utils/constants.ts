@@ -39,6 +39,7 @@ export enum Events {
   USER_VOICE_STATE_UPDATE = "userVoiceStateUpdate",
   VOICE_CHANNEL_JOIN = "voiceChannelJoin",
   VOICE_CHANNEL_LEAVE = "voiceChannelLeave",
+  USER_SLOWMODE_UPDATE = "userSlowmodeUpdate",
 }
 
 /**
@@ -82,6 +83,7 @@ export enum WSEvents {
   VOICE_STATE_UPDATE = "VoiceStateUpdate",
   VOICE_CHANNEL_JOIN = "VoiceChannelJoin",
   VOICE_CHANNEL_LEAVE = "VoiceChannelLeave",
+  USER_SLOWMODE_UPDATE = "UserSlowmodes",
 }
 
 /**

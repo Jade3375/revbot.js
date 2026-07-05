@@ -6,6 +6,7 @@ import type {
 } from "revolt-api";
 import { client } from "../client/client";
 import { Badges, UUID } from "../utils/index";
+import { MessageOptions } from "..";
 
 /**
  * Represents a user in the client.
@@ -149,6 +150,25 @@ export class User extends Base {
   async createDM(): Promise<DMChannel> {
     const data = await this.client.api.get(`/users/${this.id}/dm`);
     return this.client.channels._add(data as APIChannel) as DMChannel;
+  }
+
+  /**
+   * Sends a direct message (DM) to the user.
+   *
+   * @param {MessageOptions | string} options - The message options or content to send.
+   * @returns {Promise<void>} A promise that resolves when the message is sent.
+   * @throws {Error} If the DM channel could not be created.
+   *
+   * @example
+   * ```typescript
+   * await user.sendDM("Hello!");
+   * await user.sendDM({ content: "Hello!" });
+   * ```
+   */
+  async sendDM(options: MessageOptions | string): Promise<void> {
+	const dmChannel = await this.createDM();
+	if(!dmChannel) throw new Error("Failed to create DM channel.");
+	dmChannel.send(options);
   }
 
   avatarURL(): string | undefined {

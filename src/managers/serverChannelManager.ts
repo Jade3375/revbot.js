@@ -16,6 +16,7 @@ export interface CreateChannelOptions {
   type?: "Text" | "Voice";
   description?: string;
   nsfw?: boolean;
+  slowmode?: number;
   voice: {
     max_users?: number;
   };

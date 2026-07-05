@@ -1,5 +1,6 @@
 // Static event map for robust registration
 import { BulkMessageDelete } from "./bulkMessageDelete";
+import { UserSlowmodes } from "./userSlowmodes";
 import { ChannelCreate } from "./channelCreate";
 import { ChannelDelete } from "./channelDelete";
 import { ChannelGroupJoin } from "./channelGroupJoin";
@@ -57,4 +58,5 @@ export const EventMap = {
   userVoiceStateUpdate: UserVoiceStateUpdate,
   voiceChannelJoin: VoiceChannelJoin,
   voiceChannelLeave: VoiceChannelLeave,
+  userSlowmodeUpdate: UserSlowmodes,
 };

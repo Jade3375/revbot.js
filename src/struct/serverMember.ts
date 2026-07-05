@@ -3,6 +3,7 @@ import { Base } from "./base";
 import { Attachment, Server, User, Role, Presence } from "./index";
 import { client } from "../client/client";
 import { FullPermissions, Badges } from "../utils";
+import { MessageOptions } from "..";
 
 /**
  * Represents a member of a server.
@@ -175,6 +176,21 @@ export class ServerMember extends Base {
    */
   leave(): Promise<void> {
     return this.client.servers.delete(this.serverId);
+  }
+
+  /**
+   * Sends a direct message (DM) to the server member.
+   * @param {MessageOptions | string} options - The message options or content to send.
+   * @returns {Promise<void>} A promise that resolves when the message is sent.
+   * @throws {Error} If the DM channel could not be created.
+   * @example
+   * ```typescript
+   * await member.sendDM("Hello!");
+   * await member.sendDM({ content: "Hello!" });
+   * ```
+   */
+  sendDM(options: MessageOptions | string): Promise<void> {
+	return this.user.sendDM(options);
   }
 
   /**
